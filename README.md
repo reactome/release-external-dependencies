@@ -1,0 +1,1 @@
+This project's purpose is to check all external third-party dependencies required for the Reactome release and verify they are available and correct.
