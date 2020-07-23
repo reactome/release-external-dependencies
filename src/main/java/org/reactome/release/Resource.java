@@ -67,7 +67,7 @@ public class Resource {
 		return this.csvRecord.toString();
 	}
 
-	protected enum ResourceType {
+	public enum ResourceType {
 		FILE("File"),
 		REST_ENDPOINT("REST EndPoint"),
 		WEB_PAGE("Web Page"),
