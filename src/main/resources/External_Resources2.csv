@@ -1,2 +1,0 @@
-Release Step,Main Program,Dependency in Source Code,Resource,Resource Description,Resource Type,Resource URL
-UniProt Update,uniprot_xml2sql_isoform.pl,UniprotUpdate.pm#L32,uniprot_sprot.xml.gz,Swiss-Prot entries from UniProt,File,ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.xml.gz
