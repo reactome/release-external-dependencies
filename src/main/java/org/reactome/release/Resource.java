@@ -1,57 +1,101 @@
 package org.reactome.release;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
+
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+
 import org.apache.commons.csv.CSVRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Resource {
 	private final Logger logger = LogManager.getLogger();
-	private CSVRecord csvRecord;
-	private Map<String, String> csvHeaderNameToValueMap;
+	private Map<String, String> headerNameToValueMap;
 
 	public Resource(CSVRecord csvRecord) {
-		this.csvRecord = csvRecord;
-		unpackCSVRecord(csvRecord);
+		unpackRecord(csvRecord);
+		checkMandatoryAttributesExist(csvRecord.toString());
 	}
 
-	private void unpackCSVRecord(CSVRecord csvRecord) {
-		this.csvHeaderNameToValueMap = csvRecord.toMap();
+	public Resource(JsonObject jsonObject) {
+		unpackRecord(jsonObject);
+		checkMandatoryAttributesExist(jsonObject.toString());
+	}
+
+	private void unpackRecord(CSVRecord csvRecord) {
+		this.headerNameToValueMap = csvRecord.toMap();
+	}
+
+	@SuppressWarnings("unchecked")
+	private void unpackRecord(JsonObject jsonObject) {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			this.headerNameToValueMap = mapper.readValue(jsonObject.toString(), HashMap.class);
+		} catch (IOException e) {
+			logger.error("Unable to parse the JsonObject " + jsonObject + " as a HashMap", e);
+		}
+	}
+
+	private void checkMandatoryAttributesExist(String originalRecord) throws IllegalArgumentException {
+		Map<String, String> mandatoryAttributesMap = new HashMap<>();
+
+		mandatoryAttributesMap.put("Release Step", getReleaseStep());
+		mandatoryAttributesMap.put("Main Program", getMainProgramName());
+		mandatoryAttributesMap.put("Dependency in Source Code", getSourceCodeDependency());
+		mandatoryAttributesMap.put("Resource", getResourceName());
+		mandatoryAttributesMap.put("Resource Description", getResourceDescription());
+		mandatoryAttributesMap.put("Resource Type", getResourceType().toString());
+		mandatoryAttributesMap.put("Resource URL", getResourceURL().toString());
+
+		for (Entry<String, String> mandatoryAttributeEntry: mandatoryAttributesMap.entrySet()) {
+			String mandatoryAttributeName = mandatoryAttributeEntry.getKey();
+			String mandatoryAttributeValue = mandatoryAttributeEntry.getValue();
+
+			if (mandatoryAttributeValue == null || mandatoryAttributeValue.isEmpty()) {
+				throw new IllegalStateException(
+					mandatoryAttributeName + " is empty or does not exist for " + originalRecord
+				);
+			}
+		}
 	}
 
 	public String getReleaseStep() {
-		return this.csvHeaderNameToValueMap.get("Release Step");
+		return this.headerNameToValueMap.get("Release Step");
 	}
 
 	public String getMainProgramName() {
-		return this.csvHeaderNameToValueMap.get("Main Program");
+		return this.headerNameToValueMap.get("Main Program");
 	}
 
 	public String getSourceCodeDependency() {
-		return this.csvHeaderNameToValueMap.get("Dependency in Source Code");
+		return this.headerNameToValueMap.get("Dependency in Source Code");
 	}
 
 	public String getResourceName() {
-		return this.csvHeaderNameToValueMap.get("Resource");
+		return this.headerNameToValueMap.get("Resource");
 	}
 
 	public String getResourceDescription() {
-		return this.csvHeaderNameToValueMap.get("Resource Description");
+		return this.headerNameToValueMap.get("Resource Description");
 	}
 
 	public ResourceType getResourceType() {
-		String resourceType = this.csvHeaderNameToValueMap.get("Resource Type").toUpperCase().replace(" ", "_");
+		String resourceType = this.headerNameToValueMap.get("Resource Type").toUpperCase().replace(" ", "_");
 		return ResourceType.valueOf(resourceType);
 	}
 
-	public Map<String, String> getCsvHeaderNameToValueMap() {
-		return this.csvHeaderNameToValueMap;
+	public Map<String, String> getHeaderNameToValueMap() {
+		return this.headerNameToValueMap;
 	}
 
 	public URL getResourceURL() {
-		String resourceURL = this.csvHeaderNameToValueMap.get("Resource URL");
+		String resourceURL = this.headerNameToValueMap.get("Resource URL");
 		try {
 			return new URL(resourceURL);
 		} catch (MalformedURLException e) {
@@ -64,7 +108,7 @@ public class Resource {
 
 	@Override
 	public String toString() {
-		return this.csvRecord.toString();
+		return this.headerNameToValueMap.toString();
 	}
 
 	public enum ResourceType {
