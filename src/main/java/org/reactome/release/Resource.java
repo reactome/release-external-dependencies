@@ -106,6 +106,14 @@ public class Resource {
 		}
 	}
 
+	public String getErrorResponseText() {
+		return this.headerNameToValueMap.get("Error Response Text");
+	}
+
+	public String getExpectedResponseText() {
+		return this.headerNameToValueMap.get("Expected Response Text");
+	}
+
 	@Override
 	public String toString() {
 		return this.headerNameToValueMap.toString();
