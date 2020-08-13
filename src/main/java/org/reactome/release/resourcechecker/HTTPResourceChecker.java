@@ -1,5 +1,6 @@
 package org.reactome.release.resourcechecker;
 
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -15,7 +16,9 @@ public interface HTTPResourceChecker extends ResourceChecker {
 		return getHttpURLConnection("HEAD");
 	}
 
-	default HttpURLConnection getHttpURLConnection(String requestMethod, Map<String, String> requestProperties) throws IOException {
+	default HttpURLConnection getHttpURLConnection(String requestMethod, Map<String, String> requestProperties)
+		throws IOException {
+
 		HttpURLConnection httpURLConnection = (HttpURLConnection) getResourceURL().openConnection();
 		httpURLConnection.setRequestMethod(requestMethod);
 		for (Entry<String, String> requestProperty : requestProperties.entrySet()) {
@@ -56,8 +59,13 @@ public interface HTTPResourceChecker extends ResourceChecker {
 		return stringBuilder.toString();
 	}
 
-	default String getAllContent() throws IOException {
-		return getAllContent(getHttpURLConnection("GET"));
+	default String getAllContent() {
+		try {
+			return getAllContent(getHttpURLConnection("GET"));
+		} catch (IOException e) {
+			logger.error("Unable to get content for " + getResourceURL(), e);
+			return "";
+		}
 	}
 
 	default Date getLastModifiedDateTime() {
@@ -78,9 +86,45 @@ public interface HTTPResourceChecker extends ResourceChecker {
 		}
 	}
 
+	default boolean hasExpectedContent() {
+		return !isErrorResponseTextPresent() && isExpectedResponseTextPresent();
+	}
+
+	default boolean isErrorResponseTextPresent() {
+		return !getResource().getErrorResponseText().isEmpty() &&
+			getAllContent().contains(getResource().getErrorResponseText());
+	}
+
+	default boolean isExpectedResponseTextPresent() {
+		return getResource().getExpectedResponseText().isEmpty() ||
+			getAllContent().contains(getResource().getExpectedResponseText());
+	}
+
 	@Override
 	default boolean resourceExists() {
 		return getResponseCode() == HttpURLConnection.HTTP_OK;
+	}
+
+	@Override
+	default String getReport() {
+		JsonObject reportJson = new JsonObject();
+		reportJson.addProperty("Passed Checks", resourcePassesAllChecks());
+		reportJson.addProperty("Resource Exists", resourceExists());
+		reportJson.add("Response Text", getResponseTextReport());
+		return reportJson.toString();
+	}
+
+	default JsonObject getResponseTextReport() {
+		JsonObject responseTextReportJson = new JsonObject();
+		responseTextReportJson.addProperty("Has Expected Content", hasExpectedContent());
+		responseTextReportJson.addProperty("Error Response Text Present", isErrorResponseTextPresent());
+		responseTextReportJson.addProperty("Expected Response Text Present", isExpectedResponseTextPresent());
+		return responseTextReportJson;
+	}
+
+	@Override
+	default boolean resourcePassesAllChecks() {
+		return resourceExists() && hasExpectedContent();
 	}
 
 	class ContentChunkGenerator implements Iterable<String> {
