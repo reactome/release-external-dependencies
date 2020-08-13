@@ -29,7 +29,7 @@ public class Main {
 
 	private static List<Resource> getResourcesToCheck(String fileName) throws IOException {
 		String resourcesFilePath = Main.class.getClassLoader().getResource(fileName).getPath();
-		ResourceBuilder resourceBuilder = new ResourceBuilder();
-		return resourceBuilder.getResources(resourcesFilePath);
+		ResourceParser resourceParser = new ResourceParser();
+		return resourceParser.getResources(resourcesFilePath);
 	}
 }

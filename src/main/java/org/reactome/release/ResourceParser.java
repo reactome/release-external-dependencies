@@ -18,7 +18,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-public class ResourceBuilder {
+public class ResourceParser {
 
 	/**
 	 * Returns a list of Resource objects representing resources as described in a CSV or JSON file.
