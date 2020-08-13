@@ -18,24 +18,25 @@ public class RESTfulAPIResourceChecker implements HTTPResourceChecker {
 		return this.resource;
 	}
 
-	@Override
-	public String getReport() throws IOException {
-		return getContentsAsJSON();
-	}
-
-	public String getContentsAsJSON() throws IOException {
+	public String getContentsAsJSON() {
 		return getContents("json");
 	}
 
-	public String getContentsAsXML() throws  IOException {
+	public String getContentsAsXML() {
 		return getContents("xml");
 	}
 
-	private String getContents(String contentFormat) throws IOException {
+	private String getContents(String contentFormat)  {
 		String requestMethod = "GET";
 		Map<String, String> requestProperties = new HashMap<>();
 		requestProperties.put("Content-Type", "application/" + contentFormat);
 
-		return getAllContent(getHttpURLConnection(requestMethod, requestProperties));
+		try {
+
+			return getAllContent(getHttpURLConnection(requestMethod, requestProperties));
+		} catch (IOException e) {
+			logger.error("Unable to make an HTTP URL Connection to ", e);
+			return "";
+		}
 	}
 }
