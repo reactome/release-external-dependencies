@@ -24,35 +24,14 @@ public class WebPageResourceChecker implements HTTPResourceChecker {
 		return HTTPResourceChecker.super.resourceExists() && hasExpectedContent();
 	}
 
-	private boolean hasExpectedContent() {
-		try {
-			// TODO: Work on parsing JSON instead of CSV
-			// TODO: Check "Error Response Text" to see if an error occurred in the scraped content
-			String scrapedContent = getContentByScrapingWebsite();
-			if (
-				!resource.getErrorResponseText().isEmpty() &&
-				scrapedContent.contains(resource.getErrorResponseText())
-			) {
-				return false;
-			} else if (
-				!resource.getExpectedResponseText().isEmpty() &&
-				!scrapedContent.contains(resource.getExpectedResponseText())
-			) {
-				return false;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return true;
+	@Override
+	public String getReport() {
+		System.out.println(HTTPResourceChecker.super.getResponseCode());
+		return getAllContent();
 	}
 
 	@Override
-	public String getReport() throws IOException {
-		System.out.println(HTTPResourceChecker.super.getResponseCode());
-		return getContentByScrapingWebsite();
-	}
-
-	private String getContentByScrapingWebsite() throws IOException {
+	public String getAllContent() {
 		// Init chromedriver
 		// TODO: Create instructions and/or script to install chromedriver
 		String chromeDriverPath = "/usr/bin/chromedriver" ;
