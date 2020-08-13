@@ -1,7 +1,5 @@
 package org.reactome.release.resourcechecker;
 
-import java.io.IOException;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -22,12 +20,6 @@ public class WebPageResourceChecker implements HTTPResourceChecker {
 	@Override
 	public boolean resourceExists() {
 		return HTTPResourceChecker.super.resourceExists() && hasExpectedContent();
-	}
-
-	@Override
-	public String getReport() {
-		System.out.println(HTTPResourceChecker.super.getResponseCode());
-		return getAllContent();
 	}
 
 	@Override

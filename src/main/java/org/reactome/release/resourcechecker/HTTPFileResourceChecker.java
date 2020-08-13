@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 import java.util.Iterator;
@@ -54,16 +53,6 @@ public class HTTPFileResourceChecker implements HTTPResourceChecker, FileResourc
 
 	@Override
 	public String getReport() {
-//		resourceExists();
-//		System.out.println(getResponseCode());
-//		System.out.println(getFileSize() / (1024.0 * 1024.0) + " MB");
-//		System.out.println(getContents());
-//		System.out.println(getLastModifiedDateTime());
-//		System.out.println(getResource().getResourceName());
-//		Path downloadedFile = Paths.get(getResource().getResourceName());
-//		saveFileContents(downloadedFile);
-//		System.out.println(Files.readAllLines(downloadedFile).get(1));
-//		return null;
-		return "";
+		return FileResourceChecker.super.getReport();
 	}
 }
