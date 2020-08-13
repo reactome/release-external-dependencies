@@ -1,9 +1,12 @@
 package org.reactome.release;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.io.IOException;
+import com.google.gson.JsonParser;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -16,30 +19,36 @@ import org.apache.logging.log4j.Logger;
 
 public class Resource {
 	private final Logger logger = LogManager.getLogger();
-	private Map<String, String> headerNameToValueMap;
+	private JsonObject resourceAsJson;
 
-	public Resource(CSVRecord csvRecord) {
-		unpackRecord(csvRecord);
-		checkMandatoryAttributesExist(csvRecord.toString());
+	public Resource(CSVRecord resourceInfoCSV) {
+		this.resourceAsJson = convertCSVToJson(resourceInfoCSV);
+		checkMandatoryAttributesExist(this.resourceAsJson.toString());
 	}
 
-	public Resource(JsonObject jsonObject) {
-		unpackRecord(jsonObject);
-		checkMandatoryAttributesExist(jsonObject.toString());
+	public Resource(JsonObject resourceInfoJson) {
+		this.resourceAsJson = resourceInfoJson;
+		checkMandatoryAttributesExist(this.resourceAsJson.toString());
 	}
 
-	private void unpackRecord(CSVRecord csvRecord) {
-		this.headerNameToValueMap = csvRecord.toMap();
+	private JsonObject convertCSVToJson(CSVRecord resourceInfoCSV) {
+		String resourceInfoJson = convertCSVToJsonString(resourceInfoCSV);
+
+		return new JsonParser().parse(resourceInfoJson).getAsJsonObject();
 	}
 
-	@SuppressWarnings("unchecked")
-	private void unpackRecord(JsonObject jsonObject) {
-		ObjectMapper mapper = new ObjectMapper();
+	private String convertCSVToJsonString(CSVRecord resourceInfoCSV) {
+		String resourceInfoJson = "";
 		try {
-			this.headerNameToValueMap = mapper.readValue(jsonObject.toString(), HashMap.class);
-		} catch (IOException e) {
-			logger.error("Unable to parse the JsonObject " + jsonObject + " as a HashMap", e);
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+			resourceInfoJson = mapper.writeValueAsString(resourceInfoCSV.toMap());
+		} catch (JsonProcessingException e) {
+			logger.error("Unable to parse the CSV record's header to value map into JSON String", e);
 		}
+
+		return resourceInfoJson;
 	}
 
 	private void checkMandatoryAttributesExist(String originalRecord) throws IllegalArgumentException {
@@ -66,36 +75,44 @@ public class Resource {
 	}
 
 	public String getReleaseStep() {
-		return this.headerNameToValueMap.get("Release Step");
+		return this.resourceAsJson.get("Release Step").getAsString();
 	}
 
 	public String getMainProgramName() {
-		return this.headerNameToValueMap.get("Main Program");
+		return this.resourceAsJson.get("Main Program").getAsString();
 	}
 
 	public String getSourceCodeDependency() {
-		return this.headerNameToValueMap.get("Dependency in Source Code");
+		return this.resourceAsJson.get("Dependency in Source Code").getAsString();
 	}
 
 	public String getResourceName() {
-		return this.headerNameToValueMap.get("Resource");
+		return this.resourceAsJson.get("Resource").getAsString();
 	}
 
 	public String getResourceDescription() {
-		return this.headerNameToValueMap.get("Resource Description");
+		return this.resourceAsJson.get("Resource Description").getAsString();
 	}
 
 	public ResourceType getResourceType() {
-		String resourceType = this.headerNameToValueMap.get("Resource Type").toUpperCase().replace(" ", "_");
+		String resourceType = this.resourceAsJson.get("Resource Type").getAsString().toUpperCase().replace(" ", "_");
 		return ResourceType.valueOf(resourceType);
 	}
 
-	public Map<String, String> getHeaderNameToValueMap() {
-		return this.headerNameToValueMap;
+	public JsonObject getResourceAsJsonObject() {
+		return this.resourceAsJson;
 	}
 
+//	public String getHeaderAsTSVString() {
+//		return String.join("\t", getHeaderNameToValueMap().keySet());
+//	}
+//
+//	public String getValuesAsTSVString() {
+//		return String.join("\t", getHeaderNameToValueMap().values());
+//	}
+
 	public URL getResourceURL() {
-		String resourceURL = this.headerNameToValueMap.get("Resource URL");
+		String resourceURL = this.resourceAsJson.get("Resource URL").getAsString();
 		try {
 			return new URL(resourceURL);
 		} catch (MalformedURLException e) {
@@ -107,16 +124,25 @@ public class Resource {
 	}
 
 	public String getErrorResponseText() {
-		return this.headerNameToValueMap.get("Error Response Text");
+		JsonElement errorResponseText = this.resourceAsJson.get("Error Response Text");
+		return errorResponseText != null ? errorResponseText.getAsString() : "";
 	}
 
 	public String getExpectedResponseText() {
-		return this.headerNameToValueMap.get("Expected Response Text");
+		JsonElement expectedResponseText = this.resourceAsJson.get("Expected Response Text");
+		return expectedResponseText != null ? expectedResponseText.getAsString() : "";
+	}
+
+	public long getExpectedFileSizeInBytes() {
+		final long fileSizeNotApplicable = -1;
+
+		JsonElement expectedFileSize = this.resourceAsJson.get("Expected File Size");
+		return expectedFileSize != null ? expectedFileSize.getAsLong() : fileSizeNotApplicable;
 	}
 
 	@Override
 	public String toString() {
-		return this.headerNameToValueMap.toString();
+		return this.resourceAsJson.toString();
 	}
 
 	public enum ResourceType {
