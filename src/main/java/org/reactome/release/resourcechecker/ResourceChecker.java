@@ -1,6 +1,6 @@
 package org.reactome.release.resourcechecker;
 
-import java.io.IOException;
+import com.google.gson.JsonObject;
 import java.net.URL;
 
 import org.apache.logging.log4j.LogManager;
@@ -19,5 +19,13 @@ public interface ResourceChecker {
 
 	boolean resourceExists();
 
-	String getReport() throws IOException;
+	String getReport();
+
+	default String getResourceJsonWithReport() {
+		JsonObject resourceJson = getResource().getResourceAsJsonObject().deepCopy();
+		resourceJson.addProperty("Report", getReport());
+		return resourceJson.toString();
+	}
+
+	boolean resourcePassesAllChecks();
 }
