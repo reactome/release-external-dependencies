@@ -72,11 +72,6 @@ public class FTPFileResourceChecker implements FileResourceChecker {
 	}
 
 	@Override
-	public String getReport() {
-		return String.join("\t", Boolean.toString(resourceExists()), Long.toString(getFileSize()));
-	}
-
-	@Override
 	public void saveFileContents(Path downloadDestination) throws IOException {
 		FTPClient ftpClient = connectToFTPClient();
 
