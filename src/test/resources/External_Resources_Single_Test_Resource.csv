@@ -1,0 +1,2 @@
+Release Step,Main Program,Dependency in Source Code,Resource,Resource Description,Resource Type,Resource URL
+GO Update,go_obo_update.pl,go_obo_update.pl#L445,EBI GO Term page,Quick GO summary page for GO term (linked to in Wiki report),Web Page,https://www.ebi.ac.uk/QuickGO/GTerm?id=GO:00000011
