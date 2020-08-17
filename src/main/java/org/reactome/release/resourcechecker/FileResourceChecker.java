@@ -1,6 +1,7 @@
 package org.reactome.release.resourcechecker;
 
 import com.google.gson.JsonObject;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -41,12 +42,13 @@ public interface FileResourceChecker extends ResourceChecker {
 	}
 
 	@Override
-	default String getReport() {
+	default JsonObject getReport() {
 		JsonObject reportJson = new JsonObject();
 		reportJson.addProperty("Passed Checks", resourcePassesAllChecks());
 		reportJson.addProperty("Resource Exists", resourceExists());
 		reportJson.add("File Size", getFileSizeReport(getResource().getExpectedFileSizeInBytes()));
-		return reportJson.toString();
+
+		return reportJson;
 	}
 
 	default JsonObject getFileSizeReport(long previousFileSize) {

@@ -1,5 +1,7 @@
 package org.reactome.release.resourcechecker;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import java.net.URL;
 
@@ -19,13 +21,19 @@ public interface ResourceChecker {
 
 	boolean resourceExists();
 
-	String getReport();
+	JsonObject getReport();
 
 	default String getResourceJsonWithReport() {
 		JsonObject resourceJson = getResource().getResourceAsJsonObject().deepCopy();
-		resourceJson.addProperty("Report", getReport());
-		return resourceJson.toString();
+		resourceJson.add("Report", getReport());
+
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		return gson.toJson(resourceJson);
 	}
 
 	boolean resourcePassesAllChecks();
+
+	default String getResourceName() {
+		return getResource().getResourceName();
+	};
 }

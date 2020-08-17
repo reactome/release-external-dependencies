@@ -1,6 +1,7 @@
 package org.reactome.release.resourcechecker;
 
 import com.google.gson.JsonObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -106,12 +107,13 @@ public interface HTTPResourceChecker extends ResourceChecker {
 	}
 
 	@Override
-	default String getReport() {
+	default JsonObject getReport() {
 		JsonObject reportJson = new JsonObject();
 		reportJson.addProperty("Passed Checks", resourcePassesAllChecks());
 		reportJson.addProperty("Resource Exists", resourceExists());
 		reportJson.add("Response Text", getResponseTextReport());
-		return reportJson.toString();
+
+		return reportJson;
 	}
 
 	default JsonObject getResponseTextReport() {

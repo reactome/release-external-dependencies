@@ -1,5 +1,6 @@
 package org.reactome.release.resourcechecker;
 
+import com.google.gson.JsonObject;
 import java.io.IOException;
 
 import java.nio.file.Files;
@@ -52,7 +53,7 @@ public class HTTPFileResourceChecker implements HTTPResourceChecker, FileResourc
 	}
 
 	@Override
-	public String getReport() {
+	public JsonObject getReport() {
 		return FileResourceChecker.super.getReport();
 	}
 }
