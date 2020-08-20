@@ -132,13 +132,14 @@ public interface FileResourceChecker extends ResourceChecker {
 		}
 
 		private static String getSuffixByByteUnitMagnitude(int byteUnitMagnitude) {
-			return Arrays.stream(ByteUnit.values())
-				.filter(byteUnit -> byteUnit.getByteUnitMagnitude() == byteUnitMagnitude)
-				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException(
+			try {
+				ByteUnit byteUnitForMagnitudeValue = ByteUnit.values()[byteUnitMagnitude];
+				return byteUnitForMagnitudeValue.getByteUnitSuffix();
+			} catch (ArrayIndexOutOfBoundsException e) {
+				throw new IllegalArgumentException(
 					"Could not find suffix for the ByteUnit magnitude of " + byteUnitMagnitude
-				))
-				.getByteUnitSuffix();
+				);
+			}
 		}
 
 		private static String appendByteUnitSuffixToFileSize(double fileSize, String fileSizeSuffix) {
