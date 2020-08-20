@@ -1,3 +1,6 @@
 # Intellij Files
 .idea/
 release-external-dependencies.iml
+
+# Maven Files/Folders
+target/

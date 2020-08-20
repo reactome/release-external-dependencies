@@ -1,0 +1,12 @@
+[
+  {
+    "Release Step": "UniProt Update",
+    "Main Program": "uniprot_xml2sql_isoform.pl",
+    "Dependency in Source Code": "UniprotUpdate.pm#L32",
+    "Resource": "uniprot_sprot.xml.gz",
+    "Resource Description": "Swiss-Prot entries from UniProt",
+    "Resource Type": "File",
+    "Resource URL": "ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.xml.gz",
+    "Expected File Size": 775928409
+  }
+]

@@ -1,0 +1,1030 @@
+[
+  {
+    "Release Step": "UniProt Update",
+    "Main Program": "uniprot_xml2sql_isoform.pl",
+    "Dependency in Source Code": "UniprotUpdate.pm#L32",
+    "Resource": "uniprot_sprot.xml.gz",
+    "Resource Description": "Swiss-Prot entries from UniProt",
+    "Resource Type": "File",
+    "Resource URL": "ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.xml.gz"
+  },
+  {
+    "Release Step": "UniProt Update",
+    "Main Program": "uniprot_xml2sql_isoform.pl",
+    "Dependency in Source Code": "UniprotUpdate.pm#L33",
+    "Resource": "uniprot-reviewed:no.list.gz",
+    "Resource Description": "TrEMBL entries from UniProt",
+    "Resource Type": "File",
+    "Resource URL": "https://www.uniprot.org/uniprot/?query=reviewed%3Ano&compress=yes&format=list"
+  },
+  {
+    "Release Step": "UniProt Update",
+    "Main Program": "uniprot_xml2sql_isoform.pl#L293",
+    "Dependency in Source Code": "EnsEMBLUtils.pm#L70",
+    "Resource": "/lookup/id/[gene_id]",
+    "Resource Description": "EnsEMBL REST endpoint to query if gene is canonical",
+    "Resource Type": "REST EndPoint",
+    "Resource URL": "https://rest.ensembl.org/lookup/id/ENSG00000157764"
+  },
+  {
+    "Release Step": "GO Update",
+    "Main Program": "go_obo_update.pl",
+    "Dependency in Source Code": "go_obo_update.pl#L25",
+    "Resource": "go.obo",
+    "Resource Description": "GO term entries flat file from Gene Ontology",
+    "Resource Type": "File",
+    "Resource URL": "http://current.geneontology.org/ontology/go.obo"
+  },
+  {
+    "Release Step": "GO Update",
+    "Main Program": "go_obo_update.pl",
+    "Dependency in Source Code": "go_obo_update.pl#L28",
+    "Resource": "ec2go",
+    "Resource Description": "Mapping of EC numbers to GO terms",
+    "Resource Type": "File",
+    "Resource URL": "http://geneontology.org/external2go/ec2go"
+  },
+  {
+    "Release Step": "GO Update",
+    "Main Program": "go_obo_update.pl",
+    "Dependency in Source Code": "go_obo_update.pl#L445",
+    "Resource": "EBI GO Term page",
+    "Resource Description": "Quick GO summary page for GO term (linked to in Wiki report)",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/QuickGO/GTerm?id=GO:0000001",
+    "Error Response Text": "the Term you were trying to view does not exist",
+    "Expected Response Text": ""
+  },
+  {
+    "Release Step": "ChEBI Update",
+    "Main Program": "data-release-pipeline/chebiupdate/Main.java",
+    "Dependency in Source Code": "data-release-pipeline/chebiupdate/ChebiDataRetriever.java#L206",
+    "Resource": "ChEBI Web Services",
+    "Resource Description": "Source code and description for accessing ChEBI entries",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/chebi/webServices.do#Java"
+  },
+  {
+    "Release Step": "Orthopair",
+    "Main Program": "data-release-pipeline/orthopairs/Main.java",
+    "Dependency in Source Code": "data-release-pipeline/orthopairs/Main.java#L80",
+    "Resource": "QfO_Genome_Orthologs.tar.gz",
+    "Resource Description": "Ortholog data from Panther",
+    "Resource Type": "File",
+    "Resource URL": "ftp://ftp.pantherdb.org/ortholog/current_release/QfO_Genome_Orthologs.tar.gz"
+  },
+  {
+    "Release Step": "Orthopair",
+    "Main Program": "data-release-pipeline/orthopairs/Main.java",
+    "Dependency in Source Code": "data-release-pipeline/orthopairs/Main.java#L80",
+    "Resource": "Orthologs_HCOP.tar.gz",
+    "Resource Description": "Ortholog data from Panther (needed for species including sscr and others)",
+    "Resource Type": "File",
+    "Resource URL": "ftp://ftp.pantherdb.org/ortholog/current_release/Orthologs_HCOP.tar.gz"
+  },
+  {
+    "Release Step": "Orthopair",
+    "Main Program": "data-release-pipeline/orthopairs/Main.java",
+    "Dependency in Source Code": "data-release-pipeline/orthopairs/Main.java#L96",
+    "Resource": "HGNC_homologene.rpt",
+    "Resource Description": "Mouse gene to protein mapping file",
+    "Resource Type": "File",
+    "Resource URL": "http://www.informatics.jax.org/downloads/reports/HGNC_homologene.rpt"
+  },
+  {
+    "Release Step": "Orthopair",
+    "Main Program": "data-release-pipeline/orthopairs/Main.java",
+    "Dependency in Source Code": "data-release-pipeline/orthopairs/Main.java#L96",
+    "Resource": "GENES_RAT.txt",
+    "Resource Description": "Rat gene to protein mapping file",
+    "Resource Type": "File",
+    "Resource URL": "ftp://ftp.rgd.mcw.edu/pub/data_release/GENES_RAT.txt"
+  },
+  {
+    "Release Step": "Orthopair",
+    "Main Program": "data-release-pipeline/orthopairs/Main.java",
+    "Dependency in Source Code": "data-release-pipeline/orthopairs/Main.java#L96",
+    "Resource": "GenePageEnsemblModelMapping.txt",
+    "Resource Description": "Frog gene to protein mapping file",
+    "Resource Type": "File",
+    "Resource URL": "ftp://ftp.xenbase.org/pub/GenePageReports/GenePageEnsemblModelMapping.txt"
+  },
+  {
+    "Release Step": "Orthopair",
+    "Main Program": "data-release-pipeline/orthopairs/Main.java",
+    "Dependency in Source Code": "data-release-pipeline/orthopairs/Main.java#L96",
+    "Resource": "ensembl_1_to_1.txt",
+    "Resource Description": "Zebra Fish gene to protein mapping file",
+    "Resource Type": "File",
+    "Resource URL": "https://zfin.org/downloads/ensembl_1_to_1.txt"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L27",
+    "Resource": "genes_diseases_external_references.xml",
+    "Resource Description": "Orphanet Data (PASSWORD REQUIRED)",
+    "Resource Type": "File",
+    "Resource URL": "http://www.orphadata.org/data/BDD_partners/genes_diseases_external_references.xml"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L38",
+    "Resource": "uniprotmapping.txt",
+    "Resource Description": "PRO Data",
+    "Resource Type": "File",
+    "Resource URL": "ftp://ftp.pir.georgetown.edu/databases/ontology/pro_obo/PRO_mappings/uniprotmapping.txt"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L47",
+    "Resource": "homo_sapiens.tsv",
+    "Resource Description": "Complex Portal Data",
+    "Resource Type": "File",
+    "Resource URL": "ftp://ftp.ebi.ac.uk/pub/databases/intact/complex/current/complextab/homo_sapiens.tsv"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L81",
+    "Resource": "fbgn_NAseq_Uniprot_fb_2019_03.tsv.gz",
+    "Resource Description": "FlyBase Data",
+    "Resource Type": "File",
+    "Resource URL": "ftp://ftp.flybase.net/releases/current/precomputed_files/genes/fbgn_NAseq_Uniprot_fb_2019_03.tsv.gz"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L90",
+    "Resource": "hmdb_metabolites.zip",
+    "Resource Description": "HMDB Metabolites Data",
+    "Resource Type": "File",
+    "Resource URL": "http://www.hmdb.ca/system/downloads/current/hmdb_metabolites.zip"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L99",
+    "Resource": "hmdb_proteins.zip",
+    "Resource Description": "HMDB Proteins Data",
+    "Resource Type": "File",
+    "Resource URL": "http://www.hmdb.ca/system/downloads/current/hmdb_proteins.zip"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L108",
+    "Resource": "zinc_uniprot_ortholog.txt",
+    "Resource Description": "ZINC Data (UniProt mapping) - ZINC Target Reference Database",
+    "Resource Type": "File",
+    "Resource URL": "http://zinc15.docking.org/orthologs.txt:uniprot?count=all"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L117",
+    "Resource": "zinc_uniprot_ortholog.csv",
+    "Resource Description": "ZINC Data (UniProt mapping) - ZINC Substances, FDA, World Drugs, Metabolites, Biogenic, Investigation, Purchasable Predictions Reference Databases",
+    "Resource Type": "File",
+    "Resource URL": "http://zinc15.docking.org/orthologs.csv?count=all"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L126",
+    "Resource": "chebi.info.txt.gz",
+    "Resource Description": "ZINC Data (ChEBI mapping) - ZINC Reference Database",
+    "Resource Type": "File",
+    "Resource URL": "http://files.docking.org/catalogs/1/chebi/chebi.info.txt.gz"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L136",
+    "Resource": "rest.kegg.jp/get/[id(+id+id...)]",
+    "Resource Description": "KEGG \"get\" endpoint - retrieval of entries from a selected database",
+    "Resource Type": "REST EndPoint",
+    "Resource URL": "http://rest.kegg.jp/get/C01290+G00092"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L145",
+    "Resource": "rhea2reactome.tsv",
+    "Resource Description": "Rhea Data",
+    "Resource Type": "File",
+    "Resource URL": "ftp://ftp.ebi.ac.uk/pub/databases/rhea/tsv/rhea2reactome.tsv"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L167",
+    "Resource": "hgnc_complete_set.txt",
+    "Resource Description": "HGNC Data",
+    "Resource Type": "File",
+    "Resource URL": "ftp://ftp.ebi.ac.uk/pub/databases/genenames/new/tsv/hgnc_complete_set.txt"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L179",
+    "Resource": "CosmicMutantExport.tsv.gz",
+    "Resource Description": "COSMIC Data (PASSWORD REQUIRED) - https://cancer.sanger.ac.uk/cosmic/help/file_download",
+    "Resource Type": "File",
+    "Resource URL": "https://cancer.sanger.ac.uk/cosmic/file_download/GRCh38/cosmic/v87/CosmicMutantExport.tsv.gz"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L189",
+    "Resource": "mim2gene.txt",
+    "Resource Description": "OMIM Data",
+    "Resource Type": "File",
+    "Resource URL": "https://omim.org/static/omim/data/mim2gene.txt"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L198",
+    "Resource": "CTD_chem_gene_ixns.csv.gz",
+    "Resource Description": "CTD Data",
+    "Resource Type": "File",
+    "Resource URL": "http://ctd.mdibl.org/reports/CTD_chem_gene_ixns.csv.gz"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L207",
+    "Resource": "opentargets_genes_unique.tsv",
+    "Resource Description": "OpenTargets Data",
+    "Resource Type": "File",
+    "Resource URL": "https://storage.googleapis.com/open-targets-data-releases/18.10/output/summaries/opentargets_genes_unique.tsv"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/basic-file-retrievers.xml#L216",
+    "Resource": "enzyme.dat",
+    "Resource Description": "IntEnz",
+    "Resource Type": "File",
+    "Resource URL": "ftp://ftp.ebi.ac.uk/pub/databases/intenz/enzyme/enzyme.dat"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/ensembl-file-retrievers.xml#L26",
+    "Resource": "rest.ensembl.org/lookup/id/[id]",
+    "Resource Description": "EnsEMBL REST endpoint to query if gene information",
+    "Resource Type": "REST EndPoint",
+    "Resource URL": "http://rest.ensembl.org/lookup/id/ENSMUSG00000020383"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/ensembl-file-retrievers.xml#L33",
+    "Resource": "rest.ensembl.org/xrefs/id/[id]",
+    "Resource Description": "EnsEMBL REST endpoint to query external references for a gene of a core Reactome species",
+    "Resource Type": "REST EndPoint",
+    "Resource URL": "http://rest.ensembl.org/xrefs/id/ENSMUSG00000020383"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/ensembl-file-retrievers.xml#L43",
+    "Resource": "rest.ensembl.org/xrefs/id/[id]",
+    "Resource Description": "EnsEMBL REST endpoint to query external references for a gene of a non-core Reactome species",
+    "Resource Type": "REST EndPoint",
+    "Resource URL": "http://rest.ensembl.org/xrefs/id/PF3D7_02150000"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/uniprot-file-retrievers.xml#L37",
+    "Resource": "UniProt Mapper",
+    "Resource Description": "UniProt Web Service to POST a list of identifiers to map between UniProt and another resource",
+    "Resource Type": "Web Service",
+    "Resource URL": "https://www.uniprot.org/uploadlists"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L18",
+    "Resource": "BioGPS gene viewer",
+    "Resource Description": "BioGPS Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://biogps.org/gene/ENSG00000133703"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L27",
+    "Resource": "BioModels in identifiers.org",
+    "Resource Description": "BioModels Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100006"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L47",
+    "Resource": "COSMIC in identifiers.org",
+    "Resource Description": "COSMIC Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100802"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L61",
+    "Resource": "CTD Gene in identifiers.org",
+    "Resource Description": "CTD Gene Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100131"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L75",
+    "Resource": "dbSNP in identifiers.org",
+    "Resource Description": "dbSNP Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100206"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL gene summary page (human gene)",
+    "Resource Description": "EnsEMBL Access URL for human gene",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://www.ensembl.org/homo_sapiens/geneview?gene=ENSG00000000938"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL gene summary page (bos taurus gene)",
+    "Resource Description": "EnsEMBL Access URL for cow gene",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://www.ensembl.org/bos_taurus/geneview?gene=ENSBTAG00000000008"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL gene summary page (caenorhabditis elegans gene)",
+    "Resource Description": "EnsEMBL Access URL for nematode worm gene",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://metazoa.ensembl.org/caenorhabditis_elegans/geneview?gene=C34G6.4b"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL gene summary page (canis familiaris gene)",
+    "Resource Description": "EnsEMBL Access URL for dog gene",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://www.ensembl.org/canis_familiaris/geneview?gene=ENSCAFG00000000005"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL gene summary page (danio rerio gene)",
+    "Resource Description": "EnsEMBL Access URL for zebra fish gene",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://www.ensembl.org/danio_rerio/geneview?gene=ENSDARG00000000019"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL gene summary page (dictyostelium discoideum gene)",
+    "Resource Description": "EnsEMBL Access URL for cellular slime mold gene",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://protists.ensembl.org/dictyostelium_discoideum/geneview?gene=DDB_G0267378"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL gene summary page (drosophila melanogaster gene)",
+    "Resource Description": "EnsEMBL Access URL for fruit fly gene",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://metazoa.ensembl.org/drosophila_melanogaster/geneview?gene=FBgn0000017"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL gene summary page (gallus gallus gene)",
+    "Resource Description": "EnsEMBL Access URL for chicken gene",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://www.ensembl.org/gallus_gallus/geneview?gene=ENSGALG00000000038"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL gene summary page (mus musculus gene)",
+    "Resource Description": "EnsEMBL Access URL for mouse gene",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://www.ensembl.org/mus_musculus/geneview?gene=ENSMUSG000000028"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL gene summary page (rattus norvegicus gene)",
+    "Resource Description": "EnsEMBL Access URL for rat gene",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://www.ensembl.org/rattus_norvegicus/geneview?gene=ENSRNOG00000000024"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL gene summary page (plasmodium falciparum gene)",
+    "Resource Description": "EnsEMBL Access URL for malarial parasite protist gene",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://protists.ensembl.org/plasmodium_falciparum/geneview?gene=PF10_0077"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL gene summary page (saccharomyces cerevisiae gene)",
+    "Resource Description": "EnsEMBL Access URL for budding yeast gene",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://fungi.ensembl.org/saccharomyces_cerevisiae/geneview?gene=Q0120"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL gene summary page (schizosaccaromyces pombe gene)",
+    "Resource Description": "EnsEMBL Access URL for fission yeast gene",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://fungi.ensembl.org/schizosaccharomyces_pombe/geneview?gene=SPAC1002.07c"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL gene summary page (sus scrofa gene)",
+    "Resource Description": "EnsEMBL Access URL for pig gene",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://www.ensembl.org/sus_scrofa/geneview?gene=ENSSSCG00000000006"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL gene summary page (xenopus tropicalis gene)",
+    "Resource Description": "EnsEMBL Access URL for western clawed frog gene",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://www.ensembl.org/xenopus_tropicalis/geneview?gene=ENSXETG00000000003"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL transcript summary page (human transcript)",
+    "Resource Description": "EnsEMBL Access URL for human transcript",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://www.ensembl.org/homo_sapiens/transview?transcript=ENST00000014914"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL transcript summary page (mus musculus transcript)",
+    "Resource Description": "EnsEMBL Access URL for mouse transcript",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://www.ensembl.org/mus_musculus/transview?transcript=ENSMUST00000207604"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL peptide summary page (gallus gallus peptide)",
+    "Resource Description": "EnsEMBL Access URL for chicken peptide",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://apr2005.archive.ensembl.org/gallus_gallus/protview?peptide=ENSGALP00000000406"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/addlinks/ensembl/EnsemblReferenceDatabaseGenerator.java#L128",
+    "Resource": "EnsEMBL peptide summary page (rattus norvegicus peptide)",
+    "Resource Description": "EnsEMBL Access URL for rat peptide",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://www.ensembl.org/rattus_norvegicus/protview?peptide=ENSRNOP00000006671"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L83",
+    "Resource": "Monarch gene summary",
+    "Resource Description": "Monarch Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://monarchinitiative.org/gene/NCBIGene:3845"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L98",
+    "Resource": "NCBI Gene in identifiers.org",
+    "Resource Description": "NCBI Gene Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100099"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L112",
+    "Resource": "FlyBase in identifiers.org",
+    "Resource Description": "FlyBase Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100050"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L121",
+    "Resource": "GeneCards in identifiers.org",
+    "Resource Description": "GeneCards Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100407"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L145",
+    "Resource": "HapMap in identifiers.org",
+    "Resource Description": "HapMap Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100374"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L159",
+    "Resource": "Complex Portal in identifiers.org",
+    "Resource Description": "Complex Portal Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100875"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L173",
+    "Resource": "IntEnz in identifiers.org",
+    "Resource Description": "IntEnz Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100001"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L186",
+    "Resource": "KEGG Gene gene summary page (human gene)",
+    "Resource Description": "KEGG Gene Access URL for human",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.genome.jp/dbget-bin/www_bget?hsa:448835"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L186",
+    "Resource": "KEGG Gene gene summary page (bos taurus gene)",
+    "Resource Description": "KEGG Gene Access URL for cow",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.genome.jp/dbget-bin/www_bget?bta:100048947"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L186",
+    "Resource": "KEGG Gene gene summary page (caenorhabditis elegans gene)",
+    "Resource Description": "KEGG Gene Access URL for nematode worm",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.genome.jp/dbget-bin/www_bget?cel:CELE_4R79.2"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L186",
+    "Resource": "KEGG Gene gene summary page (canis familiaris gene)",
+    "Resource Description": "KEGG Gene Access URL for dog",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.genome.jp/dbget-bin/www_bget?cfa:100049001"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L186",
+    "Resource": "KEGG Gene gene summary page (danio rerio gene)",
+    "Resource Description": "KEGG Gene Access URL for zebra fish",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.genome.jp/dbget-bin/www_bget?dre:100000122"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L186",
+    "Resource": "KEGG Gene gene summary page (dictyostelium discoideum gene)",
+    "Resource Description": "KEGG Gene Access URL for cellular slime mold",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.genome.jp/dbget-bin/www_bget?ddi:DDB_G0267378"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L186",
+    "Resource": "KEGG Gene gene summary page (drosophila melanogaster gene)",
+    "Resource Description": "KEGG Gene Access URL for fruit fly",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.genome.jp/dbget-bin/www_bget?dme:Dmel_CG10002"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L186",
+    "Resource": "KEGG Gene gene summary page (gallus gallus gene)",
+    "Resource Description": "KEGG Gene Access URL for chicken",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.genome.jp/dbget-bin/www_bget?gga:100049058"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L186",
+    "Resource": "KEGG Gene gene summary page (mus musculus gene)",
+    "Resource Description": "KEGG Gene Access URL for mouse",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.genome.jp/dbget-bin/www_bget?mmu:100017"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L186",
+    "Resource": "KEGG Gene gene summary page (plasmodium falciparum gene)",
+    "Resource Description": "KEGG Gene Access URL for malarial parasite protist",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.genome.jp/dbget-bin/www_bget?pfa:PF3D7_0103800"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L186",
+    "Resource": "KEGG Gene gene summary page (rattus norvegicus gene)",
+    "Resource Description": "KEGG Gene Access URL for rat",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.genome.jp/dbget-bin/www_bget?rno:100124593"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L186",
+    "Resource": "KEGG Gene gene summary page (saccharomyces cerevisiae gene)",
+    "Resource Description": "KEGG Gene Access URL for budding yeast",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.genome.jp/dbget-bin/www_bget?sce:Q0120"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L186",
+    "Resource": "KEGG Gene gene summary page (schizosaccharomyces pombe gene)",
+    "Resource Description": "KEGG Gene Access URL for fission yeast",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.genome.jp/dbget-bin/www_bget?spo:SPAC1002.07c"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L186",
+    "Resource": "KEGG Gene gene summary page (sus scrofa gene)",
+    "Resource Description": "KEGG Gene Access URL for pig",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.genome.jp/dbget-bin/www_bget?ssc:100037274"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L186",
+    "Resource": "KEGG Gene gene summary page (xenopus tropicalis gene)",
+    "Resource Description": "KEGG Gene Access URL for western clawed frog",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.genome.jp/dbget-bin/www_bget?xtr:100036607"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L205",
+    "Resource": "OMIM in identifiers.org",
+    "Resource Description": "OMIM Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100024"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L213",
+    "Resource": "Orphanet (rare disease/orphan drug) gene summary",
+    "Resource Description": "Orphanet Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://www.orpha.net/consor/cgi-bin/Disease_Genes.php?data_id=22138"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L231",
+    "Resource": "PDB in identifiers.org",
+    "Resource Description": "PDB Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100029"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L246",
+    "Resource": "PRO in identifiers.org",
+    "Resource Description": "PRO Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100184"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L255",
+    "Resource": "RefSeq in identifiers.org",
+    "Resource Description": "RefSeq Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100067"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L264",
+    "Resource": "Rhea in identifiers.org",
+    "Resource Description": "Rhea Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100113"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L278",
+    "Resource": "UniProt in identifiers.org",
+    "Resource Description": "UniProt Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100164"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L293",
+    "Resource": "UCSC genome browser for a gene",
+    "Resource Description": "UCSC Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://genome.ucsc.edu/cgi-bin/hgLinkIn?id=Q9NUX5&resource=uniprot"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L303",
+    "Resource": "Wormbase in identifiers.org",
+    "Resource Description": "Wormbase Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100038"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L320",
+    "Resource": "ZINC Target",
+    "Resource Description": "ZINC Target Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://zinc15.docking.org/orthologs/?uniprot=P08908"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L331",
+    "Resource": "ZINC in identifiers.org",
+    "Resource Description": "ZINC Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100688"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L343",
+    "Resource": "ZINC Substances that interact with a protein",
+    "Resource Description": "ZINC Substances Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://zinc15.docking.org/orthologs/5HT1A_HUMAN/substances/"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L350",
+    "Resource": "ZINC FDA approved that interact with a protein",
+    "Resource Description": "ZINC FDA approved Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://zinc15.docking.org/orthologs/5HT1A_HUMAN/substances/subsets/fda/"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L357",
+    "Resource": "ZINC World Drugs that interact with a protein",
+    "Resource Description": "ZINC World Drugs Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://zinc15.docking.org/orthologs/5HT1A_HUMAN/substances/subsets/world/"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L364",
+    "Resource": "ZINC Metabolites that interact with a protein",
+    "Resource Description": "ZINC Metabolites Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://zinc15.docking.org/orthologs/5HT1A_HUMAN/substances/subsets/metabolites/"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L371",
+    "Resource": "ZINC Biogenic that interact with a protein",
+    "Resource Description": "ZINC Biogenic Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://zinc15.docking.org/orthologs/5HT1A_HUMAN/substances/subsets/biogenic/"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L378",
+    "Resource": "ZINC Investigational that may interact with a protein",
+    "Resource Description": "ZINC Investigational Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://zinc15.docking.org/orthologs/5HT1A_HUMAN/substances/subsets/investigational-only/"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L385",
+    "Resource": "ZINC Predictions Purchasable that are predicted to interact with a protein",
+    "Resource Description": "ZINC Predictions Purchasable Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://zinc15.docking.org/orthologs/5HT1A_HUMAN/predictions/subsets/purchasable/"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L398",
+    "Resource": "HMDB Protein - summary of protein with known metabolites",
+    "Resource Description": "HMDB Protein Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://www.hmdb.ca/proteins/HMDBP02566"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L413",
+    "Resource": "HMDB Metabolite in identifiers.org",
+    "Resource Description": "HMDB Metabolite Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100079"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L428",
+    "Resource": "HGNC in identifiers.org",
+    "Resource Description": "HGNC Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/miriam/main/resources/MIR:00100111"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/resources/reference-databases.xml#L436",
+    "Resource": "OpenTargets - summary of gene as drug target",
+    "Resource Description": "Open Targets Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.targetvalidation.org/target/ENSG00000178394"
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/kegg/KEGGSpeciesCache.java#L28",
+    "Resource": "br08601.keg",
+    "Resource Description": "Mapping of KEGG Species codes",
+    "Resource Type": "File",
+    "Resource URL": "http://www.genome.jp/kegg-bin/download_htext?htext=br08601.keg&format=htext&filedir="
+  },
+  {
+    "Release Step": "AddLinks",
+    "Main Program": "add-links/Main.java",
+    "Dependency in Source Code": "add-links/src/main/java/IdentifiersDotOrgUtil.java#L29",
+    "Resource": "? (Currently does not resolve -- looking for replacement on their new site)",
+    "Resource Description": "? (Currently does not resolve -- looking for replacement on their new site)",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://identifiers.org/rest/resources/MIR:00100111"
+  },
+  {
+    "Release Step": "Other Identifiers",
+    "Main Program": "retrieve_indirectIdentifiers_from_mart.pl#L44",
+    "Dependency in Source Code": "modules/GKB/EnsEMBLMartUtils.pm#L343",
+    "Resource": "EnsEMBLMart external references",
+    "Resource Description": "List of external references accessible from EnsEMBL Mart for a given species",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://www.ensembl.org/biomart/martservice?type=listAttributes&mart=ENSEMBL_MART_ENSEMBL&virtualSchema=default&dataset=hsapiens_gene_ensembl&interface=default&attributePage=feature_page&attributeGroup=external&attributeCollection=xrefs"
+  },
+  {
+    "Release Step": "Other Identifiers",
+    "Main Program": "retrieve_indirectIdentifiers_from_mart.pl#L44",
+    "Dependency in Source Code": "modules/GKB/EnsEMBLMartUtils.pm#L343",
+    "Resource": "EnsEMBLMart microarray references",
+    "Resource Description": "List of microarray references accessible from EnsEMBL Mart for a given species",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://www.ensembl.org/biomart/martservice?type=listAttributes&mart=ENSEMBL_MART_ENSEMBL&virtualSchema=default&dataset=hsapiens_gene_ensembl&interface=default&attributePage=feature_page&attributeGroup=external&attributeCollection=microarray"
+  },
+  {
+    "Release Step": "Other Identifiers",
+    "Main Program": "retrieve_indirectIdentifiers_from_mart.pl#L53",
+    "Dependency in Source Code": "modules/GKB/EnsEMBLMartUtils.pm#L226",
+    "Resource": "Main EnsEMBLMart service to request data via XML Query",
+    "Resource Description": "Retrieves tsv mapping of EnsEMBL gene, transcript, and peptide to queried identifier",
+    "Resource Type": "Web Service",
+    "Resource URL": "http://www.ensembl.org/biomart/martservice"
+  },
+  {
+    "Release Step": "Other Identifiers",
+    "Main Program": "retrieve_indirectIdentifiers_from_mart.pl#L53",
+    "Dependency in Source Code": "modules/GKB/EnsEMBLMartUtils.pm#L226",
+    "Resource": "Protists EnsEMBLMart service (used for D. dis and P. fal) to request data via XML Query",
+    "Resource Description": "Retrieves tsv mapping of EnsEMBL gene, transcript, and peptide to queried identifier",
+    "Resource Type": "Web Service",
+    "Resource URL": "http://protists.ensembl.org/biomart/martservice"
+  },
+  {
+    "Release Step": "Other Identifiers",
+    "Main Program": "retrieve_indirectIdentifiers_from_mart.pl#L53",
+    "Dependency in Source Code": "modules/GKB/EnsEMBLMartUtils.pm#L226",
+    "Resource": "Fungi EnsEMBLMart service (used for S. pom) to request data via XML Query",
+    "Resource Description": "Retrieves tsv mapping of EnsEMBL gene, transcript, and peptide to queried identifier",
+    "Resource Type": "Web Service",
+    "Resource URL": "http://fungi.ensembl.org/biomart/martservice"
+  },
+  {
+    "Release Step": "BioModels",
+    "Main Program": "biomodels.pl#L46",
+    "Dependency in Source Code": "biomodels.pl#L91",
+    "Resource": "BioModels page of downloadable files",
+    "Resource Description": "Listing of BioModels files - used to determine name and URL of latest SBML tar.bz2 file",
+    "Resource Type": "Web Page",
+    "Resource URL": "http://ftp.ebi.ac.uk/pub/databases/biomodels/releases/latest"
+  },
+  {
+    "Release Step": "BioModels",
+    "Main Program": "biomodels.pl#L46",
+    "Dependency in Source Code": "biomodels.pl#L96",
+    "Resource": "BioModels_Database-rXX_pub-sbml_files.tar.bz2 (where XX is the lastest BioModels version)",
+    "Resource Description": "Latest BioModels SBML .tar.bz2 file",
+    "Resource Type": "File",
+    "Resource URL": "http://ftp.ebi.ac.uk/pub/databases/biomodels/releases/latest/BioModels_Database-r31_pub-sbml_files.tar.bz2"
+  },
+  {
+    "Release Step": "BioModels",
+    "Main Program": "biomodels.pl#L52",
+    "Dependency in Source Code": "modules/GKB/InstanceCreator/ReferenceDatabase.pm#L73",
+    "Resource": "BioModels biological process summary page",
+    "Resource Description": "BioModels Access URL",
+    "Resource Type": "Web Page",
+    "Resource URL": "https://www.ebi.ac.uk/biomodels/BIOMD0000000007"
+  },
+  {
+    "Release Step": "Data Export",
+    "Main Program": "upload_ncbi.pl",
+    "Dependency in Source Code": "upload_ncbi.pl#L21",
+    "Resource": "NCBI FTP private server",
+    "Resource Description": "Location to upload Reactome NCBI gene and protein export files (PASSWORD REQUIRED)",
+    "Resource Type": "FTP Server",
+    "Resource URL": "ftp://ftp-private.ncbi.nih.gov"
+  },
+  {
+    "Release Step": "Data Export",
+    "Main Program": "upload_europepmc.pl",
+    "Dependency in Source Code": "upload_europepmc.pl#L21",
+    "Resource": "Europe PMC file upload server",
+    "Resource Description": "Location to upload Reactome's EuropePMC profile and links export files (PASSWORD REQUIRED)",
+    "Resource Type": "FTP Server",
+    "Resource URL": "ftp://labslink.ebi.ac.uk"
+  }
+]
