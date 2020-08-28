@@ -15,8 +15,6 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.reactome.release.Resource;
 
 public class FTPFileResourceChecker implements FileResourceChecker {
-	private Resource resource;
-
 	private static final String DEFAULT_USER_NAME = "anonymous";
 
 	// It is common practice to give an e-mail for the "anonymous" password
@@ -27,7 +25,9 @@ public class FTPFileResourceChecker implements FileResourceChecker {
 	private String userName;
 	private String password;
 
+	private Resource resource;
 	private FTPFile ftpFile;
+	private FTPClient ftpClient;
 
 	/**
 	 * Constructs an FTPFileResourceChecker object for the given resource.  Connection to the relevant FTP Server will
@@ -51,8 +51,6 @@ public class FTPFileResourceChecker implements FileResourceChecker {
 		this.resource = resource;
 		this.userName = userName;
 		this.password = password;
-
-		getFtpFile();
 	}
 
 	@Override
@@ -171,7 +169,7 @@ public class FTPFileResourceChecker implements FileResourceChecker {
 	}
 
 	private FTPClient connectToFTPClient() throws IOException {
-		FTPClient ftpClient = new FTPClient();
+		FTPClient ftpClient = getFTPClient();
 
 		ftpClient.connect(getFtpServer());
 		ftpClient.enterLocalPassiveMode();
@@ -182,7 +180,15 @@ public class FTPFileResourceChecker implements FileResourceChecker {
 			logger.error("Login to " + getFtpServer() + " failed");
 		}
 
-		return ftpClient;
+		return this.ftpClient;
+	}
+
+	private FTPClient getFTPClient() {
+		if (this.ftpClient == null) {
+			this.ftpClient = new FTPClient();
+		}
+
+		return this.ftpClient;
 	}
 
 	private void logoutAndDisconnect(FTPClient ftpClient) {
