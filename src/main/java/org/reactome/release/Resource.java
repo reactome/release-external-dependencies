@@ -75,27 +75,31 @@ public class Resource {
 	}
 
 	public String getReleaseStep() {
-		return this.resourceAsJson.get("Release Step").getAsString();
+		return getAsStringOrEmptyStringIfNull(this.resourceAsJson.get("Release Step"));
 	}
 
 	public String getMainProgramName() {
-		return this.resourceAsJson.get("Main Program").getAsString();
+		return getAsStringOrEmptyStringIfNull(this.resourceAsJson.get("Main Program"));
 	}
 
 	public String getSourceCodeDependency() {
-		return this.resourceAsJson.get("Dependency in Source Code").getAsString();
+		return getAsStringOrEmptyStringIfNull(this.resourceAsJson.get("Dependency in Source Code"));
 	}
 
 	public String getResourceName() {
-		return this.resourceAsJson.get("Resource").getAsString();
+		return getAsStringOrEmptyStringIfNull(this.resourceAsJson.get("Resource"));
 	}
 
 	public String getResourceDescription() {
-		return this.resourceAsJson.get("Resource Description").getAsString();
+		return getAsStringOrEmptyStringIfNull(this.resourceAsJson.get("Resource Description"));
 	}
 
 	public ResourceType getResourceType() {
-		String resourceType = this.resourceAsJson.get("Resource Type").getAsString().toUpperCase().replace(" ", "_");
+		String resourceType =
+			getAsStringOrEmptyStringIfNull(this.resourceAsJson.get("Resource Type"))
+			.toUpperCase()
+			.replace(" ", "_");
+
 		return ResourceType.valueOf(resourceType);
 	}
 
@@ -103,20 +107,12 @@ public class Resource {
 		return this.resourceAsJson;
 	}
 
-//	public String getHeaderAsTSVString() {
-//		return String.join("\t", getHeaderNameToValueMap().keySet());
-//	}
-//
-//	public String getValuesAsTSVString() {
-//		return String.join("\t", getHeaderNameToValueMap().values());
-//	}
-
 	public URL getResourceURL() {
-		String resourceURL = this.resourceAsJson.get("Resource URL").getAsString();
+		String resourceURL = getAsStringOrEmptyStringIfNull(this.resourceAsJson.get("Resource URL"));
 		try {
 			return new URL(resourceURL);
 		} catch (MalformedURLException e) {
-			String errorMessage = "Unable to create URL for " + resourceURL;
+			String errorMessage = "Unable to create URL for '" + resourceURL + "'";
 
 			logger.error(errorMessage, e);
 			throw new RuntimeException(errorMessage, e);
@@ -124,13 +120,11 @@ public class Resource {
 	}
 
 	public String getErrorResponseText() {
-		JsonElement errorResponseText = this.resourceAsJson.get("Error Response Text");
-		return errorResponseText != null ? errorResponseText.getAsString() : "";
+		return getAsStringOrEmptyStringIfNull(this.resourceAsJson.get("Error Response Text"));
 	}
 
 	public String getExpectedResponseText() {
-		JsonElement expectedResponseText = this.resourceAsJson.get("Expected Response Text");
-		return expectedResponseText != null ? expectedResponseText.getAsString() : "";
+		return getAsStringOrEmptyStringIfNull(this.resourceAsJson.get("Expected Response Text"));
 	}
 
 	public long getExpectedFileSizeInBytes() {
@@ -162,5 +156,9 @@ public class Resource {
 		public String toString() {
 			return this.resourceType;
 		}
+	}
+
+	private String getAsStringOrEmptyStringIfNull(JsonElement jsonElement) {
+		return jsonElement != null ? jsonElement.getAsString() : "";
 	}
 }
