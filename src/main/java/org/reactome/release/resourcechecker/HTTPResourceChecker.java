@@ -6,77 +6,44 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 
 public interface HTTPResourceChecker extends ResourceChecker {
-	default HttpURLConnection getHttpURLConnection() throws IOException {
-		return getHttpURLConnection("HEAD");
+	@Override
+	default JsonObject getReport() {
+		JsonObject reportJson = new JsonObject();
+		reportJson.addProperty("Passed Checks", resourcePassesAllChecks());
+		reportJson.addProperty("Resource Exists", resourceExists());
+		reportJson.add("Response Text", getResponseTextReport());
+
+		return reportJson;
 	}
 
-	default HttpURLConnection getHttpURLConnection(String requestMethod, Map<String, String> requestProperties)
-		throws IOException {
-
-		HttpURLConnection httpURLConnection = (HttpURLConnection) getResourceURL().openConnection();
-		httpURLConnection.setRequestMethod(requestMethod);
-		for (Entry<String, String> requestProperty : requestProperties.entrySet()) {
-			httpURLConnection.setRequestProperty(requestProperty.getKey(), requestProperty.getValue());
-		}
-		httpURLConnection.setInstanceFollowRedirects(true);
-		httpURLConnection.connect();
-
-		return httpURLConnection;
+	default JsonObject getResponseTextReport() {
+		JsonObject responseTextReportJson = new JsonObject();
+		responseTextReportJson.addProperty("Has Expected Content", hasExpectedContent());
+		responseTextReportJson.addProperty("Error Response Text Present", isErrorResponseTextPresent());
+		responseTextReportJson.addProperty("Expected Response Text Present", isExpectedResponseTextPresent());
+		return responseTextReportJson;
 	}
 
-	default HttpURLConnection getHttpURLConnection(String requestMethod) throws IOException {
-		return getHttpURLConnection(requestMethod, Collections.emptyMap());
+	@Override
+	default boolean resourcePassesAllChecks() {
+		return resourceExists() && hasExpectedContent();
 	}
 
-	default InputStream getContentStream(HttpURLConnection httpURLConnection) throws IOException {
-		return httpURLConnection.getInputStream();
+	@Override
+	default boolean resourceExists() {
+		return getResponseCode() == HttpURLConnection.HTTP_OK;
 	}
 
-	default Iterator<String> getContentIterator() throws IOException {
-		return getContentIterator(getHttpURLConnection("GET"));
-	}
-
-	default Iterator<String> getContentIterator(HttpURLConnection httpURLConnection) throws IOException {
-		ContentChunkGenerator contentChunkGenerator = new ContentChunkGenerator(
-			getContentStream(httpURLConnection)
-		);
-		return contentChunkGenerator.iterator();
-	}
-
-	default String getAllContent(HttpURLConnection httpURLConnection) throws IOException {
-		Iterator<String> contentIterator = getContentIterator(httpURLConnection);
-
-		StringBuilder stringBuilder = new StringBuilder();
-		while (contentIterator.hasNext()) {
-			stringBuilder.append(contentIterator.next());
-		}
-		return stringBuilder.toString();
-	}
-
-	default String getAllContent() {
-		try {
-			return getAllContent(getHttpURLConnection("GET"));
-		} catch (IOException e) {
-			logger.error("Unable to get content for " + getResourceURL(), e);
-			return "";
-		}
-	}
-
-	default Date getLastModifiedDateTime() {
-		try {
-			return new Date(getHttpURLConnection().getLastModified());
-		} catch (IOException e) {
-			logger.error("Unable to get last modified datetime for HTTP URL Connection to " + getResourceURL(), e);
-			return null;
-		}
-	}
 
 	default int getResponseCode() {
 		try {
@@ -101,32 +68,69 @@ public interface HTTPResourceChecker extends ResourceChecker {
 			getAllContent().contains(getResource().getExpectedResponseText());
 	}
 
-	@Override
-	default boolean resourceExists() {
-		return getResponseCode() == HttpURLConnection.HTTP_OK;
+	default String getAllContent() {
+		try {
+			return getAllContent(getHttpURLConnection("GET"));
+		} catch (IOException e) {
+			logger.error("Unable to get content for " + getResourceURL(), e);
+			return "";
+		}
 	}
 
-	@Override
-	default JsonObject getReport() {
-		JsonObject reportJson = new JsonObject();
-		reportJson.addProperty("Passed Checks", resourcePassesAllChecks());
-		reportJson.addProperty("Resource Exists", resourceExists());
-		reportJson.add("Response Text", getResponseTextReport());
+	default String getAllContent(HttpURLConnection httpURLConnection) throws IOException {
+		Iterator<String> contentIterator = getContentIterator(httpURLConnection);
 
-		return reportJson;
+		StringBuilder stringBuilder = new StringBuilder();
+		while (contentIterator.hasNext()) {
+			stringBuilder.append(contentIterator.next());
+		}
+		return stringBuilder.toString();
 	}
 
-	default JsonObject getResponseTextReport() {
-		JsonObject responseTextReportJson = new JsonObject();
-		responseTextReportJson.addProperty("Has Expected Content", hasExpectedContent());
-		responseTextReportJson.addProperty("Error Response Text Present", isErrorResponseTextPresent());
-		responseTextReportJson.addProperty("Expected Response Text Present", isExpectedResponseTextPresent());
-		return responseTextReportJson;
+	default Iterator<String> getContentIterator() throws IOException {
+		return getContentIterator(getHttpURLConnection("GET"));
 	}
 
-	@Override
-	default boolean resourcePassesAllChecks() {
-		return resourceExists() && hasExpectedContent();
+	default Iterator<String> getContentIterator(HttpURLConnection httpURLConnection) throws IOException {
+		ContentChunkGenerator contentChunkGenerator = new ContentChunkGenerator(
+			getContentStream(httpURLConnection)
+		);
+		return contentChunkGenerator.iterator();
+	}
+
+	default InputStream getContentStream(HttpURLConnection httpURLConnection) throws IOException {
+		return httpURLConnection.getInputStream();
+	}
+
+	default HttpURLConnection getHttpURLConnection() throws IOException {
+		return getHttpURLConnection("HEAD");
+	}
+
+	default HttpURLConnection getHttpURLConnection(String requestMethod) throws IOException {
+		return getHttpURLConnection(requestMethod, Collections.emptyMap());
+	}
+
+	default HttpURLConnection getHttpURLConnection(String requestMethod, Map<String, String> requestProperties)
+		throws IOException {
+
+		HttpURLConnection httpURLConnection = (HttpURLConnection) getResourceURL().openConnection();
+		httpURLConnection.setRequestMethod(requestMethod);
+		for (Entry<String, String> requestProperty : requestProperties.entrySet()) {
+			httpURLConnection.setRequestProperty(requestProperty.getKey(), requestProperty.getValue());
+		}
+		httpURLConnection.setInstanceFollowRedirects(true);
+		httpURLConnection.connect();
+
+		return httpURLConnection;
+	}
+
+	default ZonedDateTime getLastModifiedDateTime() {
+		try {
+			return Instant.ofEpochMilli(getHttpURLConnection().getLastModified()).atZone(ZoneId.systemDefault());
+		} catch (IOException e) {
+			logger.error("Unable to get last modified datetime for HTTP URL Connection to " + getResourceURL(), e);
+			return null;
+		}
 	}
 
 	class ContentChunkGenerator implements Iterable<String> {
@@ -144,14 +148,38 @@ public interface HTTPResourceChecker extends ResourceChecker {
 		private class ContentChunkGeneratorIterator implements Iterator<String> {
 			private String contentChunk;
 
+			public ContentChunkGeneratorIterator() {
+				resetContentChunkToEmptyString();
+			}
+
 			@Override
 			public boolean hasNext() {
+				if (this.contentChunk.isEmpty()) {
+					this.contentChunk = getNextChunk();
+				}
+
+				return !this.contentChunk.isEmpty();
+			}
+
+			@Override
+			public String next() {
+				if (!hasNext()) {
+					throw new NoSuchElementException("No more elements available from this ContentChunkGenerator");
+				}
+
+				String nextChunk = this.contentChunk;
+				resetContentChunkToEmptyString();
+				return nextChunk;
+			}
+
+			private String getNextChunk() {
+				String nextChunk = "";
+
 				byte[] buffer = new byte[4096];
 				try {
 					int bytesRead;
 					if ((bytesRead = inputStream.read(buffer, 0, buffer.length)) > 0) {
-						this.contentChunk = new String(buffer, 0, bytesRead, StandardCharsets.UTF_8);
-						return true;
+						nextChunk = new String(buffer, 0, bytesRead, StandardCharsets.UTF_8);
 					}
 				} catch (IOException e) {
 					logger.error("Unable to fetch next chunk of content from HTTP Resource", e);
@@ -161,12 +189,11 @@ public interface HTTPResourceChecker extends ResourceChecker {
 						logger.error("Unable to close the input stream for HTTP Resource", e);
 					}
 				}
-				return false;
+				return nextChunk;
 			}
 
-			@Override
-			public String next() {
-				return this.contentChunk;
+			private void resetContentChunkToEmptyString() {
+				this.contentChunk = "";
 			}
 		}
 	}
