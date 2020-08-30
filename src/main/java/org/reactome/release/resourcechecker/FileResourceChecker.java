@@ -132,6 +132,7 @@ public interface FileResourceChecker extends ResourceChecker {
 		GIGABYTE(3,"GB");
 
 		private static final double BYTE_UNIT_CONVERSION_FACTOR = 1024.0;
+
 		private int byteUnitMagnitude;
 		private String byteUnitSuffix;
 
@@ -146,6 +147,35 @@ public interface FileResourceChecker extends ResourceChecker {
 		ByteUnit(int byteUnitMagnitude, String byteUnitSuffix) {
 			this.byteUnitMagnitude = byteUnitMagnitude;
 			this.byteUnitSuffix = byteUnitSuffix;
+		}
+
+
+		/**
+		 * Converts the file size passed in bytes to a "human readable" String format.  This means the number of
+		 * bytes will be converted into the byte unit that has a numeric value equal to no more than 1024 (i.e. the
+		 * byte unit conversion factor) to express it as a smaller number with a larger byte unit.  The precision of
+		 * the conversion will be to no more than two decimal places.  For example, 1073741824 bytes will be expressed
+		 * as "1.0 GB".  If the number of bytes passed to this method is less than 1024, the same number will be
+		 * returned but with the prefix "B" appended (e.g. 1023 will return "1023.0 B").
+		 *
+		 * @param fileSizeInBytes Size of the file in number of bytes
+		 * @return A String that expresses the number of bytes passed to this method with a number no more than 1024
+		 * (i.e. the byte unit conversion factor) and the appropriate byte unit suffix.  For example, 1073741824 bytes
+		 * will return the String "1.0 GB".
+		 * @throws IllegalArgumentException Thrown if the value of fileSizeInBytes is less than 0.
+		 */
+		public static String getHumanReadableFileSize(long fileSizeInBytes) {
+			throwIllegalArgumentExceptionIfNumberOfBytesIsNegative(fileSizeInBytes);
+
+			if (GIGABYTE.isLessThanOrEqualTo(fileSizeInBytes)) {
+				return GIGABYTE.convertFromBytes(fileSizeInBytes);
+			} else if (MEGABYTE.isLessThanOrEqualTo(fileSizeInBytes)) {
+				return MEGABYTE.convertFromBytes(fileSizeInBytes);
+			} else if (KILOBYTE.isLessThanOrEqualTo(fileSizeInBytes)) {
+				return KILOBYTE.convertFromBytes(fileSizeInBytes);
+			} else {
+				return BYTE.convertFromBytes(fileSizeInBytes);
+			}
 		}
 
 		/**
@@ -171,62 +201,20 @@ public interface FileResourceChecker extends ResourceChecker {
 		}
 
 		/**
-		 * Converts the file size passed in bytes to the requested ByteUnit.  If the ByteUnit passed is BYTE, there
-		 * will be no change other than receiving the result as a String.
+		 * Converts the file size passed in bytes to the ByteUnit type on which this method is called.
+		 * If the ByteUnit passed is BYTE, there will be no change other than receiving the result as a String with "B"
+		 * as a suffix.
 		 *
 		 * @param fileSizeInBytes Size of the file in bytes
-		 * @param byteUnit Type of unit to retrieve file size as (i.e. BYTE, KILOBYTE, MEGABYTE, GIGABYTE)
 		 * @return Returns the file's size with the appropriate byte unit as a suffix (e.g. calling this method as
-		 * follows - ByteUnit.getFileSizeAs(1536, ByteUnit.MEGABYTE) - will produce the result "1.5 MB")
+		 * follows - ByteUnit.MEGABYTE.convertFromBytes(1536) - will produce the result "1.5 MB")
 		 * @throws IllegalArgumentException Thrown if the value of fileSizeInBytes is less than 0.
 		 */
-		public static String getFileSizeAs(long fileSizeInBytes, ByteUnit byteUnit) {
+		public String convertFromBytes(long fileSizeInBytes) {
 			throwIllegalArgumentExceptionIfNumberOfBytesIsNegative(fileSizeInBytes);
 
-			double convertedFileSize = fileSizeInBytes /
-				Math.pow(BYTE_UNIT_CONVERSION_FACTOR, byteUnit.getByteUnitMagnitude());
-			String convertedFileSizeSuffix = byteUnit.getByteUnitSuffix();
-
-			return appendByteUnitSuffixToFileSize(convertedFileSize, convertedFileSizeSuffix);
-		}
-
-		/**
-		 * Converts the file size passed in bytes to a "human readable" String format.  This means the number of
-		 * bytes will be converted into the byte unit that has a numeric value equal to no more than 1024 (i.e. the
-		 * byte unit conversion factor) to express it as a smaller number with a larger byte unit.  The precision of
-		 * the conversion will be to no more than two decimal places.  For example, 1073741824 bytes will be expressed
-		 * as "1.0 GB".  If the number of bytes passed to this method is less than 1024, the same number will be
-		 * returned but with the prefix "B" appended (e.g. 1023 will return "1023.0 B").
-		 *
-		 * @param fileSizeInBytes Size of the file in number of bytes
-		 * @return A String that expresses the number of bytes passed to this method with a number no more than 1024
-		 * (i.e. the byte unit conversion factor) and the appropriate byte unit suffix.  For example, 1073741824 bytes
-		 * will return the String "1.0 GB".
-		 * @throws IllegalArgumentException Thrown if the value of fileSizeInBytes is less than 0.
-		 */
-		public static String getHumanReadableFileSize(long fileSizeInBytes) {
-			throwIllegalArgumentExceptionIfNumberOfBytesIsNegative(fileSizeInBytes);
-
-			int magnitudeOfByteConversionFactor = 0;
-			double fileSize = fileSizeInBytes;
-			while (fileSize >= BYTE_UNIT_CONVERSION_FACTOR) {
-				magnitudeOfByteConversionFactor += 1;
-				fileSize = fileSize / BYTE_UNIT_CONVERSION_FACTOR;
-			}
-
-			return appendByteUnitSuffixToFileSize(
-				fileSize, getSuffixByByteUnitMagnitude(magnitudeOfByteConversionFactor)
-			);
-		}
-
-		private static String getSuffixByByteUnitMagnitude(int byteUnitMagnitude) {
-			return Arrays.stream(ByteUnit.values())
-				.filter(byteUnit -> byteUnit.getByteUnitMagnitude() == byteUnitMagnitude)
-				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException(
-					"Could not find suffix for the ByteUnit magnitude of " + byteUnitMagnitude
-				))
-				.getByteUnitSuffix();
+			double convertedFileSize = fileSizeInBytes / this.getNumberOfBytesInByteUnit();
+			return appendByteUnitSuffixToFileSize(convertedFileSize, getByteUnitSuffix());
 		}
 
 		private static String appendByteUnitSuffixToFileSize(double fileSize, String fileSizeSuffix) {
@@ -236,8 +224,16 @@ public interface FileResourceChecker extends ResourceChecker {
 
 		private static void throwIllegalArgumentExceptionIfNumberOfBytesIsNegative(long numberOfBytes) {
 			if (numberOfBytes < 0) {
-				throw new IllegalArgumentException("The number of bytes must have a positive value");
+				throw new IllegalArgumentException("The number of bytes must be greater than or equal to zero");
 			}
+		}
+
+		private boolean isLessThanOrEqualTo(long fileSizeInBytes) {
+			return this.getNumberOfBytesInByteUnit() <= fileSizeInBytes;
+		}
+
+		private double getNumberOfBytesInByteUnit() {
+			return Math.pow(BYTE_UNIT_CONVERSION_FACTOR, getByteUnitMagnitude());
 		}
 	}
 }

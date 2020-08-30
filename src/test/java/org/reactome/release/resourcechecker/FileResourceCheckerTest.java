@@ -90,18 +90,18 @@ public class FileResourceCheckerTest {
 
 		IllegalArgumentException thrown = assertThrows(
 			IllegalArgumentException.class,
-			() -> ByteUnit.getFileSizeAs(negativeNumberOfBytes, DUMMY_BYTE_UNIT),
+			() -> DUMMY_BYTE_UNIT.convertFromBytes(negativeNumberOfBytes),
 			"Expected a negative number of bytes to throw an IllegalArgumentException when passed as a parameter to " +
 				" the method 'getFileSizeAs(long, ByteUnit)', but it didn't"
 		);
 
-		assertThat(thrown.getMessage(), containsString("must have a positive value"));
+		assertThat(thrown.getMessage(), containsString("must be greater than or equal to zero"));
 	}
 
 	@Test
 	public void correctFileSizeConversionToKilobytesForZeroBytes() {
 		final int zeroBytes = 0;
-		String fileSizeAsKilobytes = ByteUnit.getFileSizeAs(zeroBytes, ByteUnit.KILOBYTE);
+		String fileSizeAsKilobytes = ByteUnit.KILOBYTE.convertFromBytes(zeroBytes);
 
 		assertThat(fileSizeAsKilobytes, is(equalTo("0.0 KB")));
 	}
@@ -109,7 +109,7 @@ public class FileResourceCheckerTest {
 	@Test
 	public void correctFileSizeConversionToKilobytesFromBytes() {
 		final int numberOfBytes = 1536;
-		String fileSizeAsKilobytes = ByteUnit.getFileSizeAs(numberOfBytes, ByteUnit.KILOBYTE);
+		String fileSizeAsKilobytes = ByteUnit.KILOBYTE.convertFromBytes(numberOfBytes);
 
 		assertThat(fileSizeAsKilobytes, is(equalTo("1.5 KB")));
 	}
@@ -117,7 +117,7 @@ public class FileResourceCheckerTest {
 	@Test
 	public void correctFileSizeConversionToKilobytesWithTwoDecimalPlaces() {
 		final int bytesForAKilobyteMeasureToTwoDecimalPlaces = 1034;
-		String fileSizeAsKilobytes = ByteUnit.getFileSizeAs(bytesForAKilobyteMeasureToTwoDecimalPlaces, ByteUnit.KILOBYTE);
+		String fileSizeAsKilobytes = ByteUnit.KILOBYTE.convertFromBytes(bytesForAKilobyteMeasureToTwoDecimalPlaces);
 
 		assertThat(fileSizeAsKilobytes, is(equalTo("1.01 KB")));
 	}
@@ -125,7 +125,7 @@ public class FileResourceCheckerTest {
 	@Test
 	public void correctFileSizeConversionToMegabytesFromBytes() {
 		final int numberOfBytes = 1572864;
-		String fileSizeAsMegabytes = ByteUnit.getFileSizeAs(numberOfBytes, ByteUnit.MEGABYTE);
+		String fileSizeAsMegabytes = ByteUnit.MEGABYTE.convertFromBytes(numberOfBytes);
 
 		assertThat(fileSizeAsMegabytes, is(equalTo("1.5 MB")));
 	}
@@ -133,7 +133,7 @@ public class FileResourceCheckerTest {
 	@Test
 	public void correctFileSizeConversionToGigabytesFromBytes() {
 		final int numberOfBytes = 1610612736;
-		String fileSizeAsGigabytes = ByteUnit.getFileSizeAs(numberOfBytes, ByteUnit.GIGABYTE);
+		String fileSizeAsGigabytes = ByteUnit.GIGABYTE.convertFromBytes(numberOfBytes);
 
 		assertThat(fileSizeAsGigabytes, is(equalTo("1.5 GB")));
 	}
@@ -149,7 +149,7 @@ public class FileResourceCheckerTest {
 				" the method 'getHumanReadableSize(long)', but it didn't"
 		);
 
-		assertThat(thrown.getMessage(), containsString("must have a positive value"));
+		assertThat(thrown.getMessage(), containsString("must be greater than or equal to zero"));
 	}
 
 	@Test
@@ -236,6 +236,10 @@ public class FileResourceCheckerTest {
 		return new FileResourceChecker() {
 			@Override
 			public void saveFileContents(Path fileDestination) throws IOException {
+				/*
+				This method has no default implementation and will be tested on interfaces or classes which implement
+				this method
+				*/
 				return;
 			}
 
@@ -256,7 +260,7 @@ public class FileResourceCheckerTest {
 		};
 	}
 
-	private JsonObject getExpectedReportJsonObject() {
+	static JsonObject getExpectedReportJsonObject() {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("Passed Checks", true);
 		jsonObject.addProperty("Resource Exists", true);
