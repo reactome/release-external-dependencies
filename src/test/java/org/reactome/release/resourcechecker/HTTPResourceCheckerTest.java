@@ -6,6 +6,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -406,6 +408,27 @@ public class HTTPResourceCheckerTest {
 		);
 
 		assertThat(thrown.getMessage(), containsString("No more elements available"));
+	}
+
+	@Test
+	public void hasNextReturnsFalseIfInputStreamThrowsAnIOExceptionOnReading() throws IOException {
+		InputStream inputStream = Mockito.mock(InputStream.class);
+		Mockito.doThrow(IOException.class).when(inputStream).read(any(), anyInt(), anyInt());
+
+		Iterator<String> contentChunkGeneratorIterator = new ContentChunkGenerator(inputStream).iterator();
+
+		assertThat(contentChunkGeneratorIterator.hasNext(), is(equalTo(false)));
+	}
+
+	@Test
+	public void hasNextReturnsFalseIfInputStreamThrowsAnIOExceptionOnReadingAndClosing() throws IOException {
+		InputStream inputStream = Mockito.mock(InputStream.class);
+		Mockito.doThrow(IOException.class).when(inputStream).read(any(), anyInt(), anyInt());
+		Mockito.doThrow(IOException.class).when(inputStream).close();
+
+		Iterator<String> contentChunkGeneratorIterator = new ContentChunkGenerator(inputStream).iterator();
+
+		assertThat(contentChunkGeneratorIterator.hasNext(), is(equalTo(false)));
 	}
 
 
