@@ -6,104 +6,130 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.reactome.release.testutilities.ResourceTestUtils.getResource;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.reactome.release.Resource;
 
 public class FTPFileResourceCheckerTest {
 	@Mock
 	private FTPClient ftpClient;
+
 	@Mock
 	private FTPFile ftpFile;
 
-	@InjectMocks
+	@Mock
+	private Resource resource;
+
 	private FTPFileResourceChecker ftpFileResourceChecker;
 
-	private FTPFile[] ftpFiles;
-
 	@BeforeEach
-	public void initializeFTPFileResourceCheckerAndMocks() throws IOException {
-		initializeFTPFileResourceChecker();
-		initializeMocks();
-		initializeFTPFilesArrayWithMockFTPFile();
+	public void initializeFTPFileResourceCheckerAndMocks() {
+		ftpFileResourceChecker = Mockito.spy(new FTPFileResourceChecker(resource));
+		MockitoAnnotations.initMocks(this);
 	}
 
 	@Test
-	public void resourceExistsIfFTPFileNameExists() {
-		Mockito.when(ftpFile.getName()).thenReturn("rhea2reactome.tsv");
+	public void resourceExistsIfFTPFileNameExists() throws IOException {
+		mockExpectedFTPInteractions();
 
-		assertThat(
-			ftpFileResourceChecker.resourceExists(),
-			is(equalTo(true))
-		);
+		Mockito.doReturn("rhea2reactome.tsv").when(ftpFile).getName();
+
+		assertThat(ftpFileResourceChecker.resourceExists(), is(equalTo(true)));
 	}
 
 	@Test
-	public void resourceDoesNotExistWhenFileNameReturnsNullOnFTPServer() {
-		Mockito.when(ftpFile.getName()).thenReturn(null);
+	public void resourceDoesNotExistWhenFileNameReturnsNullOnFTPServer() throws IOException {
+		mockExpectedFTPInteractions();
 
-		assertThat(
-			ftpFileResourceChecker.resourceExists(),
-			is(equalTo(false))
-		);
+		Mockito.doReturn(null).when(ftpFile).getName();
+
+		assertThat(ftpFileResourceChecker.resourceExists(), is(equalTo(false)));
 	}
 
 	@Test
-	public void resourceDoesNotExistWhenFileNameReturnsEmptyStringOnFTPServer() {
-		Mockito.when(ftpFile.getName()).thenReturn("");
+	public void resourceDoesNotExistWhenFileNameReturnsEmptyStringOnFTPServer() throws IOException {
+		mockExpectedFTPInteractions();
 
-		assertThat(
-			ftpFileResourceChecker.resourceExists(),
-			is(equalTo(false))
-		);
+		Mockito.doReturn("").when(ftpFile).getName();
+
+		assertThat(ftpFileResourceChecker.resourceExists(), is(equalTo(false)));
 	}
 
 	@Test
-	public void fileSizeFromFTPServerIsCorrect() {
+	public void fileSizeFromFTPServerIsCorrect() throws IOException {
 		final long expectedFileSize = 1000;
+		mockExpectedFTPInteractions();
 
 		Mockito.when(ftpFile.getSize()).thenReturn(expectedFileSize);
 
-		assertThat(
-			ftpFileResourceChecker.getFileSize(),
-			is(equalTo(expectedFileSize))
-		);
+		assertThat(ftpFileResourceChecker.getFileSize(), is(equalTo(expectedFileSize)));
 	}
 
 	@Test
 	public void correctURLIsReturnedForFTPServerHost() {
-		assertThat(
-			ftpFileResourceChecker.getFtpServer(),
-			is(equalTo("ftp.ebi.ac.uk"))
-		);
+		final String expectedFTPServerName = "ftp.ebi.ac.uk";
+
+		Mockito.doReturn(getResource().getResourceURL()).when(ftpFileResourceChecker).getResourceURL();
+
+		assertThat(ftpFileResourceChecker.getFtpServerName(), is(equalTo(expectedFTPServerName)));
 	}
 
 	@Test
 	public void correctFilePathIsReturnedForFileLocationOnFTPServer() {
-		assertThat(
-			ftpFileResourceChecker.getFtpFilePath(),
-			is(equalTo("/pub/databases/rhea/tsv/rhea2reactome.tsv"))
-		);
+		final String expectedFTPFilePath = "/pub/databases/rhea/tsv/rhea2reactome.tsv";
+
+		Mockito.doReturn(getResource().getResourceURL()).when(ftpFileResourceChecker).getResourceURL();
+
+		assertThat(ftpFileResourceChecker.getFtpFilePath(), is(equalTo(expectedFTPFilePath)));
 	}
 
-	private void initializeFTPFileResourceChecker() throws FileNotFoundException {
-		this.ftpFileResourceChecker = new FTPFileResourceChecker(getResource());
+	@Test
+	public void ftpFileIsEmptyWhenAnIOExceptionIsThrownRetrievingTheFileSize() throws IOException {
+		mockExpectedFTPInteractionsButWithAnIOExceptionOnFTPClientConnecting();
+
+		assertThatFTPFileIsEmpty();
 	}
 
-	private void initializeMocks() throws IOException {
-		MockitoAnnotations.initMocks(this);
-		setUpFTPClientMockBehaviour();
+	@Test
+	public void ftpFileIsEmptyWhenMultipleFilesAreReturnedByTheFTPServer() throws IOException {
+		mockExpectedFTPInteractionsWhenReturningMultipleFTPFiles();
+
+		assertThatFTPFileIsEmpty();
 	}
 
-	private void setUpFTPClientMockBehaviour() throws IOException {
+	private void mockExpectedFTPInteractions() throws IOException {
+		mockFTPClientReturningSingleFTPFile();
+		mockDummyServerNameAndFTPFilePath();
+	}
+
+	private void mockExpectedFTPInteractionsButWithAnIOExceptionOnFTPClientConnecting() throws IOException {
+		mockExpectedFTPInteractions();
+		Mockito.doThrow(IOException.class).when(ftpClient).connect(anyString());
+	}
+
+	private void mockExpectedFTPInteractionsWhenReturningMultipleFTPFiles() throws IOException {
+		mockFTPClientReturningMultipleFTPFiles();
+		mockDummyServerNameAndFTPFilePath();
+	}
+
+	private void mockFTPClientReturningSingleFTPFile() throws IOException {
+		mockFTPClient(new FTPFile[]{ftpFile});
+	}
+
+	private void mockFTPClientReturningMultipleFTPFiles() throws IOException {
+		FTPFile secondMockFTPFile = Mockito.mock(FTPFile.class);
+		mockFTPClient(new FTPFile[]{ftpFile, secondMockFTPFile});
+	}
+
+	private void mockFTPClient(FTPFile[] ftpFiles) throws IOException {
+		Mockito.when(ftpFileResourceChecker.getFTPClient()).thenReturn(ftpClient);
 		Mockito.doNothing().when(ftpClient).connect(anyString());
 		Mockito.doNothing().when(ftpClient).enterLocalPassiveMode();
 		Mockito.when(
@@ -112,12 +138,20 @@ public class FTPFileResourceCheckerTest {
 				ftpFileResourceChecker.getPassword()
 			)
 		).thenReturn(true);
-		Mockito.when(ftpClient.listFiles(anyString())).thenReturn(ftpFiles);
+		Mockito.doReturn(ftpFiles).when(ftpClient).listFiles(anyString());
 		Mockito.when(ftpClient.logout()).thenReturn(true);
 		Mockito.doNothing().when(ftpClient).disconnect();
 	}
 
-	private void initializeFTPFilesArrayWithMockFTPFile() {
-		ftpFiles = new FTPFile[]{ftpFile};
+	private void mockDummyServerNameAndFTPFilePath() {
+		Mockito.doReturn("dummy_server_name").when(ftpFileResourceChecker).getFtpServerName();
+		Mockito.doReturn("dummy_ftp_file_path").when(ftpFileResourceChecker).getFtpFilePath();
+	}
+
+	private void assertThatFTPFileIsEmpty() {
+		final long undefinedFileSize = -1L;
+
+		assertThat(ftpFileResourceChecker.getFileSize(), is(equalTo(undefinedFileSize)));
+		assertThat(ftpFileResourceChecker.resourceExists(), is(equalTo(false)));
 	}
 }

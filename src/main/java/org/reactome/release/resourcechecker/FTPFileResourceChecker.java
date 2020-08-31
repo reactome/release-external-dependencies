@@ -83,7 +83,7 @@ public class FTPFileResourceChecker implements FileResourceChecker {
 	}
 
 	/**
-	 * Returns the size of the FTP file being checked in bytes (0 if the file does not exist)
+	 * Returns the size of the FTP file being checked in bytes (-1 if the file does not exist)
 	 *
 	 * @return Returns the FTP file's size in bytes
 	 */
@@ -97,7 +97,7 @@ public class FTPFileResourceChecker implements FileResourceChecker {
 	 *
 	 * @return Name of the FTP host server
 	 */
-	public String getFtpServer() {
+	public String getFtpServerName() {
 		return this.getResourceURL().getHost();
 	}
 
@@ -139,12 +139,21 @@ public class FTPFileResourceChecker implements FileResourceChecker {
 		return this.password;
 	}
 
+	FTPClient getFTPClient() {
+		if (this.ftpClient == null) {
+			this.ftpClient = new FTPClient();
+		}
+
+		return this.ftpClient;
+	}
+
 	private FTPFile getFtpFile() {
 		if (this.ftpFile == null) {
 			try {
 				this.ftpFile = retrieveFtpFile();
 			} catch (IOException e) {
-				logger.error("Unable to retrieve file " + getFtpFilePath() + " from FTP Server " + getFtpServer(), e);
+				logger.error("Unable to retrieve file " + getFtpFilePath() + " from FTP Server " + getFtpServerName(), e);
+				this.ftpFile = new FTPFile();
 			}
 		}
 
@@ -171,28 +180,20 @@ public class FTPFileResourceChecker implements FileResourceChecker {
 	private FTPClient connectToFTPClient() throws IOException {
 		FTPClient ftpClient = getFTPClient();
 
-		ftpClient.connect(getFtpServer());
+		ftpClient.connect(getFtpServerName());
 		ftpClient.enterLocalPassiveMode();
 
 		if (ftpClient.login(getUserName(), getPassword())) {
-			logger.info("Login successful to " + getFtpServer());
+			logger.info("Login successful to " + getFtpServerName());
 		} else {
-			logger.error("Login to " + getFtpServer() + " failed");
+			logger.error("Login to " + getFtpServerName() + " failed");
 		}
 
-		return this.ftpClient;
-	}
-
-	private FTPClient getFTPClient() {
-		if (this.ftpClient == null) {
-			this.ftpClient = new FTPClient();
-		}
-
-		return this.ftpClient;
+		return ftpClient;
 	}
 
 	private void logoutAndDisconnect(FTPClient ftpClient) {
-		final String ftpCloseConnectionErrorMessage = "Unable to close connection to FTP Server " + getFtpServer();
+		final String ftpCloseConnectionErrorMessage = "Unable to close connection to FTP Server " + getFtpServerName();
 
 		try {
 			ftpClient.logout();
@@ -204,6 +205,6 @@ public class FTPFileResourceChecker implements FileResourceChecker {
 
 	private String getErrorMessageForNonUniqueFile(List<FTPFile> ftpFiles, String ftpFilePath) {
 		return ftpFiles.isEmpty() ? "No file " : "Multiple files " +
-			"found on " + getFtpServer() + " for path " + ftpFilePath;
+			"found on " + getFtpServerName() + " for path " + ftpFilePath;
 	}
 }
