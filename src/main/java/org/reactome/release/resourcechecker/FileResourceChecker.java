@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
+import org.reactome.release.Resource;
 
 /**
  * Represents the methods available, in any implementing class, intended to check/investigate an external file resource
@@ -33,13 +34,13 @@ public interface FileResourceChecker extends ResourceChecker {
 	 * Returns true if the current file size has not dropped more than an acceptable percentage when compared with
 	 * the previous file size.
 	 *
-	 * @param previousFileSize Last known acceptable file size in bytes
 	 * @param acceptablePercentageDrop Percentage of the drop in file size which is acceptable between the current and
 	 * previous file size
 	 * @return True if the file size has not dropped more than the acceptable percentage; False otherwise
-	 * @see #isFileSizeAcceptable(long)
+	 * @see #isFileSizeAcceptable()
 	 */
-	default boolean isFileSizeAcceptable(long previousFileSize, double acceptablePercentageDrop) {
+	default boolean isFileSizeAcceptable(double acceptablePercentageDrop) {
+		long previousFileSize = getPreviousFileSize();
 		long differenceInFileSize = getFileSize() - previousFileSize;
 		double percentChangeInFileSize = differenceInFileSize * 100.0d / previousFileSize;
 
@@ -51,14 +52,17 @@ public interface FileResourceChecker extends ResourceChecker {
 	 * Returns true if the current file size has not dropped more than an acceptable percentage (default of
 	 * 5.0%) when compared with the previous file size.
 	 *
-	 * @param previousFileSize Last known acceptable file size in bytes
 	 * @return True if the file size has not dropped more than the acceptable percentage; False otherwise
-	 * @see #isFileSizeAcceptable(long, double)
+	 * @see #isFileSizeAcceptable(double)
 	 */
-	default boolean isFileSizeAcceptable(long previousFileSize) {
+	default boolean isFileSizeAcceptable() {
 		final double acceptableFileSizePercentageDrop = 5.0;
 
-		return isFileSizeAcceptable(previousFileSize, acceptableFileSizePercentageDrop);
+		return isFileSizeAcceptable(acceptableFileSizePercentageDrop);
+	}
+
+	default void updateFileSize(Resource resource) {
+
 	}
 
 	/**
@@ -73,7 +77,7 @@ public interface FileResourceChecker extends ResourceChecker {
 		JsonObject reportJson = new JsonObject();
 		reportJson.addProperty("Passed Checks", resourcePassesAllChecks());
 		reportJson.addProperty("Resource Exists", resourceExists());
-		reportJson.add("File Size", getFileSizeReport(getResource().getExpectedFileSizeInBytes()));
+		reportJson.add("File Size", getFileSizeReport());
 
 		return reportJson;
 	}
@@ -82,16 +86,24 @@ public interface FileResourceChecker extends ResourceChecker {
 	 * Returns a report as a JsonObject describing the size of the file resource being checked and if that file size
 	 * is acceptable compared against a previously known value of the resource's file size.
 	 *
-	 * @param previousFileSize Previous size of the file in bytes as a benchmark to check if the current size is
-	 * acceptable (i.e. has it fallen significantly)
 	 * @return Report as a JsonObject detailing the results of the check performed on the file resource specifically
 	 * for its size
 	 */
-	default JsonObject getFileSizeReport(long previousFileSize) {
+	default JsonObject getFileSizeReport() {
 		JsonObject fileSizeReportJson = new JsonObject();
 		fileSizeReportJson.addProperty("File Size Found", getFileSizeFound());
-		fileSizeReportJson.addProperty("File Size Acceptable",  isFileSizeAcceptable(previousFileSize));
+		fileSizeReportJson.addProperty("File Size Acceptable",  isFileSizeAcceptable());
 		return fileSizeReportJson;
+	}
+
+	/**
+	 * Previous size of the file in bytes (typically used as a benchmark to check if the current size is
+	 * acceptable (i.e. has it fallen significantly)
+	 *
+	 * @return Previous file size of the resource being checked, in bytes
+	 */
+	default long getPreviousFileSize() {
+		return getResource().getExpectedFileSizeInBytes();
 	}
 
 	/**
@@ -118,7 +130,7 @@ public interface FileResourceChecker extends ResourceChecker {
 	 */
 	@Override
 	default boolean resourcePassesAllChecks() {
-		return resourceExists() && isFileSizeAcceptable(getResource().getExpectedFileSizeInBytes());
+		return resourceExists() && isFileSizeAcceptable();
 	}
 
 	/**
