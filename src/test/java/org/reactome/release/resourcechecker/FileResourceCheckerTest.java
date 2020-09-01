@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -30,10 +31,14 @@ public class FileResourceCheckerTest {
 		fileResourceChecker = getFileResourceChecker(testActualFileSize);
 	}
 
+	@BeforeEach
+	public void initMocks() {
+		MockitoAnnotations.initMocks(this);
+	}
+
 	@Test
 	public void correctReportIsProduced() {
 		long testExpectedFileSize = 950;
-		MockitoAnnotations.initMocks(this);
 		Mockito.when(resource.getExpectedFileSizeInBytes()).thenReturn(testExpectedFileSize);
 
 		assertThat(
@@ -54,32 +59,38 @@ public class FileResourceCheckerTest {
 
 	@Test
 	public void unexpectedFileSizeReturnsFalseForIsFileSizeAcceptable() {
-		int previousFileSize = 1000;
+		long previousFileSize = 1000;
+
+		Mockito.when(resource.getExpectedFileSizeInBytes()).thenReturn(previousFileSize);
 
 		assertThat(
-			fileResourceChecker.isFileSizeAcceptable(previousFileSize),
+			fileResourceChecker.isFileSizeAcceptable(),
 			is(false)
 		);
 	}
 
 	@Test
 	public void expectedFileSizeReturnsTrueForIsFileSizeAcceptableWithCustomAcceptablePercentageDrop() {
-		int previousFileSize = 1000;
+		long previousFileSize = 1000;
 		double acceptablePercentDropJustAboveDefault = 5.000000000000001;
 
+		Mockito.when(resource.getExpectedFileSizeInBytes()).thenReturn(previousFileSize);
+
 		assertThat(
-			fileResourceChecker.isFileSizeAcceptable(previousFileSize, acceptablePercentDropJustAboveDefault),
+			fileResourceChecker.isFileSizeAcceptable(acceptablePercentDropJustAboveDefault),
 			is(true)
 		);
 	}
 
 	@Test
 	public void unexpectedFileSizeReturnsFalseForIsFileSizeAcceptableWithCustomAcceptablePercentageDrop() {
-		int previousFileSize = 1000;
+		long previousFileSize = 1000;
 		double acceptablePercentDropJustBelowDefault = 4.999999999999999;
 
+		Mockito.when(resource.getExpectedFileSizeInBytes()).thenReturn(previousFileSize);
+
 		assertThat(
-			fileResourceChecker.isFileSizeAcceptable(previousFileSize, acceptablePercentDropJustBelowDefault),
+			fileResourceChecker.isFileSizeAcceptable(acceptablePercentDropJustBelowDefault),
 			is(false)
 		);
 	}

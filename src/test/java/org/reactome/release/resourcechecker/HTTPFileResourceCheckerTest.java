@@ -3,7 +3,6 @@ package org.reactome.release.resourcechecker;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.anyLong;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -84,7 +83,7 @@ public class HTTPFileResourceCheckerTest {
 	@Test
 	public void resourcePassesAllChecksReturnsTrueWhenResourceExistsAndFileSizeAndContentAreExpected() {
 		Mockito.doReturn(true).when(httpFileResourceChecker).resourceExists();
-		Mockito.doReturn(true).when(httpFileResourceChecker).isFileSizeAcceptable(anyLong());
+		Mockito.doReturn(true).when(httpFileResourceChecker).isFileSizeAcceptable();
 		Mockito.doReturn(true).when(httpFileResourceChecker).hasExpectedContent();
 
 		assertThat(httpFileResourceChecker.resourcePassesAllChecks(), is(equalTo(true)));
@@ -93,7 +92,7 @@ public class HTTPFileResourceCheckerTest {
 	@Test
 	public void resourcePassesAllChecksReturnsFalseWhenResourceDoesNotExist() {
 		Mockito.doReturn(false).when(httpFileResourceChecker).resourceExists();
-		Mockito.doReturn(true).when(httpFileResourceChecker).isFileSizeAcceptable(anyLong());
+		Mockito.doReturn(true).when(httpFileResourceChecker).isFileSizeAcceptable();
 		Mockito.doReturn(true).when(httpFileResourceChecker).hasExpectedContent();
 
 		assertThat(httpFileResourceChecker.resourcePassesAllChecks(), is(equalTo(false)));
@@ -102,7 +101,7 @@ public class HTTPFileResourceCheckerTest {
 	@Test
 	public void resourcePassesAllChecksReturnsFalseWhenFileSizeIsNotAcceptable() {
 		Mockito.doReturn(true).when(httpFileResourceChecker).resourceExists();
-		Mockito.doReturn(false).when(httpFileResourceChecker).isFileSizeAcceptable(anyLong());
+		Mockito.doReturn(false).when(httpFileResourceChecker).isFileSizeAcceptable();
 		Mockito.doReturn(true).when(httpFileResourceChecker).hasExpectedContent();
 
 		assertThat(httpFileResourceChecker.resourcePassesAllChecks(), is(equalTo(false)));
@@ -111,7 +110,7 @@ public class HTTPFileResourceCheckerTest {
 	@Test
 	public void resourcePassesAllChecksReturnsFalseExpectedContentIsNotPresent() {
 		Mockito.doReturn(true).when(httpFileResourceChecker).resourceExists();
-		Mockito.doReturn(true).when(httpFileResourceChecker).isFileSizeAcceptable(anyLong());
+		Mockito.doReturn(true).when(httpFileResourceChecker).isFileSizeAcceptable();
 		Mockito.doReturn(false).when(httpFileResourceChecker).hasExpectedContent();
 
 		assertThat(httpFileResourceChecker.resourcePassesAllChecks(), is(equalTo(false)));
